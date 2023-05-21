@@ -2,7 +2,8 @@ const { userData } = require("./models/UserData.js");
 const { AccesHandler } = require("./controllers/AccessHandler.js");
 const { Authorizer } = require("./controllers/Authorizer.js");
 const { UserHandler } = require("./controllers/UserHandler.js");
-const { connection } = require("./dataBase");
+const { User } = require("./models/User.js");
+const { DataBaseHandler } = require("./controllers/DataBaseHandler.js");
 
 const http = require("http");
 require("dotenv").config();
@@ -19,18 +20,10 @@ server.listen(port, () => {
   console.log(`Server is lisening on port: ${port}`);
 });
 
-connection.connect((error) => {
-  if (error) {
-    console.error("Error to conect DB: ", error);
-  } else {
-    console.log("Susccess conocetion to DB!");
-  }
-});
+let dataBaseHandler = new DataBaseHandler();
+let userHandler = new UserHandler(dataBaseHandler);
+user = User;
+user.name = "pedro";
+user.password = "poejekndka";
 
-connection.query("SELECT * FROM user", (error, results, fields) => {
-  if (error) {
-    console.error("QUERY ERROR : ", error);
-  } else {
-    console.log("QUERY RESULTS: ", results);
-  }
-});
+/* userHandler.create(user); */

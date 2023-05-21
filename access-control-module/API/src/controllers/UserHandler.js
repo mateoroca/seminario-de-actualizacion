@@ -1,17 +1,26 @@
+const dataBase = require("../dataBase");
+const { DB } = require("../dataBase");
+const { DataBaseHandler } = require("./DataBaseHandler");
+
 class UserHandler {
+  constructor(DataBaseHandler) {
+    this.DBHandler = DataBaseHandler;
+  }
   create(data) {
-    return true;
+    this.DBHandler.connect();
+    const Data = {
+      paramName1: data.name,
+      paramName2: data.password,
+    };
+
+    this.DBHandler.executeStoredProcedure("createUser", Data);
   }
 
   update(id, data) {
     return true;
   }
 
-  read(Data) {
-    console.log(Data.id);
-    console.log(Data.name);
-    console.log(Data.surname);
-  }
+  read(Data) {}
 
   remove(id) {
     return true;
@@ -25,3 +34,4 @@ class UserHandler {
 module.exports = {
   UserHandler,
 };
+/*  */
