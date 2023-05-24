@@ -2,12 +2,12 @@ let UserData = {
   id: "",
   name: "",
   surname: "",
-  gender: "",
-  email: "",
-  phone: "",
   dni: "",
+  gender: "",
+  phoneNumber: "",
+  email: "",
   userMembership: "",
-  isActive: false,
+  isActive: 0,
 };
 
 module.exports = {

@@ -12,15 +12,20 @@ class DataBaseHandler {
     });
   }
 
-  connect() {
-    this.DB.connect((error) => {
-      if (error) {
-        console.error("Error to conect DB: ", error);
-      } else {
-        console.log("Susccess conocetion to DB!");
-      }
+  async connect() {
+    return new Promise((resolve, reject) => {
+      this.DB.connect((error) => {
+        if (error) {
+          console.error("Error to connect DB: ", error);
+          reject(error);
+        } else {
+          console.log("Success connection to DB!");
+          resolve();
+        }
+      });
     });
   }
+
   executeStoredProcedure(StorageP, data) {
     const queryParams = Object.values(data)
       .map((value) => `'${value}'`)
@@ -41,6 +46,61 @@ class DataBaseHandler {
       }
     });
   }
+
+  async executeQuery(query) {
+    return new Promise((resolve, reject) => {
+      this.DB.query(query, (error, results, fields) => {
+        if (error) {
+          console.error("QUERY ERROR:", error);
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+
+  executeStoredProcedureByIdWithData(StorageP, data, id) {
+    const queryParams = Object.values(data)
+      .map((value) => `'${value}'`)
+      .join(", ");
+    const query = `CALL ${StorageP}(${id},${queryParams})`;
+
+    this.DB.query(query, (error, results, fields) => {
+      if (error) {
+        console.error("QUERY ERROR:", error);
+        this.DB.end(() => {
+          console.log("Close DB");
+        });
+      } else {
+        this.DB.end(() => {
+          console.log("Close DB, Query successful");
+        });
+        return true;
+      }
+    });
+  }
+
+  executeStoredProcedureById(StorageP, id) {
+    const query = `CALL ${StorageP}(${id})`;
+
+    this.DB.query(query, (error, results, fields) => {
+      if (error) {
+        console.error("QUERY ERROR:", error);
+        this.DB.end(() => {
+          console.log("Close DB");
+        });
+      } else {
+        this.DB.end(() => {
+          console.log("Close DB, Query successful");
+          return results;
+        });
+        return true;
+      }
+    });
+  }
+
+  executeStoragePwithReturnValue(procedureName, params) {}
 }
 
 module.exports = {
