@@ -1,13 +1,21 @@
 class AccessHandler {
-  groupAccessByResource = [];
-  resourcessByGroup = [];
-  add(resourceID, groupId) {}
-  remove(resourceID, groupId) {}
-  getGroupaccessByResource(resourceID) {
+  constructor(dbHandler) {
+    this.DBHandler = dbHandler;
+    this.groupAccessByResource = [];
+    this.acceessByGroup = [];
+  }
+
+  add(accessID, groupID) {
+    this.DBHandler.connect();
+    this.DBHandler.DB.query("", Data, groupID);
+  }
+
+  remove(accessID, groupID) {}
+  getGroupaccessByAccess(accessID) {
     return this.groupAccessByResource;
   }
-  getResourcessByGroup(groupId) {
-    return this.resourcessByGroup;
+  getAccessByGroup(groupId) {
+    return this.acceessByGroup;
   }
 }
 

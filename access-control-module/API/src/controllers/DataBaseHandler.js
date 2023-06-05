@@ -26,7 +26,11 @@ class DataBaseHandler {
     });
   }
 
-  executeStoredProcedure(StorageP, data) {
+  async disconnect() {
+    await this.DB.end();
+  }
+
+  executeSPWithData(StorageP, data) {
     const queryParams = Object.values(data)
       .map((value) => `'${value}'`)
       .join(", ");
@@ -60,7 +64,7 @@ class DataBaseHandler {
     });
   }
 
-  executeStoredProcedureByIdWithData(StorageP, data, id) {
+  executeSPByIdWithData(StorageP, data, id) {
     const queryParams = Object.values(data)
       .map((value) => `'${value}'`)
       .join(", ");
@@ -81,7 +85,7 @@ class DataBaseHandler {
     });
   }
 
-  executeStoredProcedureById(StorageP, id) {
+  executeSPById(StorageP, id) {
     const query = `CALL ${StorageP}(${id})`;
 
     this.DB.query(query, (error, results, fields) => {
@@ -100,7 +104,20 @@ class DataBaseHandler {
     });
   }
 
-  executeStoragePwithReturnValue(procedureName, params) {}
+  executeStoredProsedure(procedureName) {
+    this.DB.query(`CALL ${procedureName}()`, (error, results) => {
+      if (error) {
+        console.error("Error al ejecutar el procedimiento almacenado:", error);
+        return;
+      }
+
+      const groups = results[0];
+
+      console.log(groups);
+    });
+
+    this.DB.end();
+  }
 }
 
 module.exports = {

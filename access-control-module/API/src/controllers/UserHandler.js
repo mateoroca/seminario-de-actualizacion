@@ -50,38 +50,24 @@ class UserHandler {
   }
 
   read(id) {
-    this.DBHandler.DB.query(
-      "CALL getData_userByUserID(?)",
-      [id],
-      (error, results) => {
-        if (error) {
-          console.error("Error:", error);
-          return;
+    return new Promise((resolve, reject) => {
+      this.DBHandler.DB.query(
+        "CALL getData_userByUserID(?)",
+        [id],
+        (error, results) => {
+          if (error) {
+            console.error("Error:", error);
+            reject(error);
+            return;
+          }
+
+          const userData = results[0];
+          resolve(userData);
         }
+      );
 
-        const userData = results[0];
-
-        const name = userData[0].name;
-        const surname = userData[0].surname;
-        const dni = userData[0].dni;
-        const gender = userData[0].gender;
-        const phoneNumber = userData[0].phonenumber;
-        const email = userData[0].email;
-        const userMembership = userData[0].user_membership;
-        const isActive = userData[0].is_active;
-
-        console.log("Name:", name);
-        console.log("Surname:", surname);
-        console.log("DNI:", dni);
-        console.log("Gender:", gender);
-        console.log("Phone Number:", phoneNumber);
-        console.log("Email:", email);
-        console.log("User Membership:", userMembership);
-        console.log("Is Active:", isActive);
-      }
-    );
-
-    this.DBHandler.DB.end();
+      this.DBHandler.DB.end();
+    });
   }
 
   remove(id) {
@@ -127,6 +113,22 @@ class UserHandler {
           );
         }
       );
+    });
+  }
+  showAll() {
+    return new Promise((resolve, reject) => {
+      this.DBHandler.DB.query("CALL GetUsers()", (error, results) => {
+        if (error) {
+          console.error("Error:", error);
+          reject(error);
+          return;
+        }
+
+        const users = results[0];
+        resolve(users);
+      });
+
+      this.DBHandler.DB.end();
     });
   }
 }

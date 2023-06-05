@@ -4,6 +4,7 @@ const { UserHandler } = require("./controllers/UserHandler.js");
 const { User } = require("./models/User.js");
 const { UserData } = require("./models/UserData.js");
 const { DataBaseHandler } = require("./controllers/DataBaseHandler.js");
+const { GroupHandler } = require("./controllers/GroupHandler.js");
 
 const http = require("http");
 require("dotenv").config();
@@ -23,11 +24,32 @@ server.listen(port, () => {
 let dataBaseHandler = new DataBaseHandler();
 let userHandler = new UserHandler(dataBaseHandler);
 let user = Object.assign({}, User);
+let groupH = new GroupHandler(dataBaseHandler);
 
-user.userName = "teico";
-user.password = "123456";
+/* groupH.checkIfGroupsExist().then((state) => {
+  console.log(state[0].hasGroups);
+});
+ */
 
-let userData = Object.assign({}, UserData);
+/* userHandler.showAll().then((users) => {
+  users.forEach((u) => {
+    console.log(u.user_name, u.id);
+  });
+}); */
+
+/* groupH.showAll().then((dta) => {
+  dta.forEach((element) => {
+    console.log(element.id, element.name);
+  });
+}); */
+
+/* groupH.create("ceo"); */
+/* groupH.remove(12); */
+
+/* user.userName = "frix";
+user.password = "123456"; */
+
+/* let userData = Object.assign({}, UserData);
 
 userData.name = "mateo";
 userData.surname = "roca";
@@ -37,6 +59,8 @@ userData.gender = "male";
 userData.phoneNumber = "2235959844";
 userData.userMembership = "ceo";
 userData.isActive = 1;
+ */
+/* userHandler.showAll(); */
 
 /* userHandler
   .getIdByUserName(user.userName)
@@ -65,13 +89,16 @@ userData.isActive = 1;
     console.error("Error:", error);
   }); */
 
-userHandler
+/* userHandler
   .getIdByUserName(user.userName)
   .then((userId) => {
-    userHandler.read(userId);
+    return userHandler.read(userId);
+  })
+  .then((userdta) => {
+    console.log(userdta[0].name);
   })
   .catch((error) => {
     console.error("Error:", error);
-  });
+  }); */
 
 /* userHandler.create(user); */
