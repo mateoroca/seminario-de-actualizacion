@@ -43,9 +43,6 @@ class DataBaseHandler {
           console.log("Close DB");
         });
       } else {
-        this.DB.end(() => {
-          console.log("Close DB, Query successful");
-        });
         return true;
       }
     });
@@ -77,30 +74,25 @@ class DataBaseHandler {
           console.log("Close DB");
         });
       } else {
-        this.DB.end(() => {
-          console.log("Close DB, Query successful");
-        });
         return true;
       }
     });
   }
 
   executeSPById(StorageP, id) {
-    const query = `CALL ${StorageP}(${id})`;
+    return new Promise((resolve, reject) => {
+      const query = `CALL ${StorageP}(${id})`;
 
-    this.DB.query(query, (error, results, fields) => {
-      if (error) {
-        console.error("QUERY ERROR:", error);
-        this.DB.end(() => {
-          console.log("Close DB");
-        });
-      } else {
-        this.DB.end(() => {
-          console.log("Close DB, Query successful");
-          return results;
-        });
-        return true;
-      }
+      this.DB.query(query, (error, results, fields) => {
+        if (error) {
+          console.error("QUERY ERROR:", error);
+          this.DB.end(() => {
+            reject(error);
+          });
+        } else {
+          resolve(results);
+        }
+      });
     });
   }
 
@@ -115,8 +107,6 @@ class DataBaseHandler {
 
       console.log(groups);
     });
-
-    this.DB.end();
   }
 }
 

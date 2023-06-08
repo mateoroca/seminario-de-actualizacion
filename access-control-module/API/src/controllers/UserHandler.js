@@ -9,7 +9,7 @@ class UserHandler {
       paramName2: data.password,
     };
 
-    this.DBHandler.executeStoredProcedure("createUser", Data);
+    this.DBHandler.executeSPWithData("createUser", Data);
   }
 
   createUserData(id, data) {
@@ -23,11 +23,7 @@ class UserHandler {
       param7: data.userMembership,
       param8: data.isActive,
     };
-    this.DBHandler.executeStoredProcedureByIdWithData(
-      "createUserData",
-      Data,
-      id
-    );
+    this.DBHandler.executeSPByIdWithData("createUserData", Data, id);
   }
 
   update(id, data) {
@@ -65,13 +61,11 @@ class UserHandler {
           resolve(userData);
         }
       );
-
-      this.DBHandler.DB.end();
     });
   }
 
   remove(id) {
-    this.DBHandler.executeStoredProcedureById("deleteUserData", id);
+    this.DBHandler.executeSPById("deleteUserData", id);
     return true;
   }
 
@@ -92,7 +86,7 @@ class UserHandler {
               "Error al ejecutar el procedimiento almacenado:",
               err
             );
-            this.DBHandler.DB.end();
+
             reject(err);
             return;
           }
@@ -127,8 +121,23 @@ class UserHandler {
         const users = results[0];
         resolve(users);
       });
+    });
+  }
 
-      this.DBHandler.DB.end();
+  async checkIfUsersExist() {
+    return new Promise((resolve, reject) => {
+      this.DBHandler.DB.query("CALL areThereUsers()", (error, results) => {
+        if (error) {
+          console.error("Error:", error);
+          reject(error);
+          return;
+        }
+
+        const exist = results[0];
+        if (exist.length > 0) {
+          resolve(true);
+        } else resolve(false);
+      });
     });
   }
 }

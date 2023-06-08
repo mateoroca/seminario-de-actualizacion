@@ -1,21 +1,68 @@
 class AccessHandler {
   constructor(dbHandler) {
     this.DBHandler = dbHandler;
-    this.groupAccessByResource = [];
-    this.acceessByGroup = [];
+    this.acceessByGroupID = [];
+    this.groupAccessByAccessID = [];
   }
 
-  add(accessID, groupID) {
+  create(groupID, data) {
     this.DBHandler.connect();
-    this.DBHandler.DB.query("", Data, groupID);
+    const Data = {
+      param1: data.name,
+      param2: data.description,
+      param3: data.path,
+    };
+    this.DBHandler.executeSPByIdWithData(`createAccess`, Data, groupID);
   }
 
-  remove(accessID, groupID) {}
-  getGroupaccessByAccess(accessID) {
-    return this.groupAccessByResource;
+  remove(accessID) {
+    this.DBHandler.executeSPById("deleteAccess", accessID);
+    return true;
   }
-  getAccessByGroup(groupId) {
-    return this.acceessByGroup;
+  getGroupAccessByAccessID(accessID) {
+    return new Promise((resolve, reject) => {
+      this.DBHandler.DB.query(
+        "CALL getGroupaccessByAccessID(?)",
+        [accessID],
+        (error, results) => {
+          if (error) {
+            console.error("Error:", error);
+            reject(error);
+            return;
+          }
+
+          const groupAccess = results[0];
+          groupAccess.forEach((element) => {
+            this.groupAccessByAccessID.push(element.groupID);
+          });
+
+          resolve(this.groupAccessByAccessID);
+        }
+      );
+    });
+  }
+
+  async getAccessByGroupID(groupId) {
+    return new Promise((resolve, reject) => {
+      this.DBHandler.DB.query(
+        "CALL getAccessByGroupId(?)",
+        [groupId],
+        (error, results) => {
+          if (error) {
+            console.error("Error:", error);
+            reject(error);
+            return;
+          }
+
+          const access = results[0];
+          access.forEach((element) => {
+            this.acceessByGroupID.push(element.accessID);
+          });
+
+          resolve(this.acceessByGroupID);
+        }
+      );
+    });
   }
 }
 
