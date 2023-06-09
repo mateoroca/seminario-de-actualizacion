@@ -48,16 +48,10 @@ class Authorizer {
       console.log("Ocurrió un error:", error);
     }
   }
-
   checkRelation(array1, array2) {
-    for (const value1 of array1) {
-      for (const value2 of array2) {
-        if (value1 === value2) {
-          return true;
-        }
-      }
-    }
-    return false;
+    if (array1.find((value1) => array2.find((value2) => value1 === value2))) {
+      return true;
+    } else return false;
   }
 }
 

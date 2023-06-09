@@ -24,18 +24,18 @@ server.listen(port, () => {
 
 let dataBaseHandler = new DataBaseHandler();
 let userHandler = new UserHandler(dataBaseHandler);
-let user = Object.assign({}, User);
 let groupH = new GroupHandler(dataBaseHandler);
 let accessHandler = new AccessHandler(dataBaseHandler);
 let authorizer = new Authorizer(accessHandler, groupH, userHandler);
 
+let user = Object.assign({}, User);
 let access = Object.assign({}, Access);
 
-access.name = "updateUser";
-access.description = "access to update user and his data";
-access.path = "userHandler/update?data=userData";
+access.name = "readData";
+access.description = "access to read data";
+access.path = "userHandler/read";
 
-authorizer.authorize(25, 11);
+authorizer.authorize(27, 14);
 
 /* groupH.getGroupIDByUserID(25).then((res) => {
   res.forEach((element) => {
@@ -43,7 +43,7 @@ authorizer.authorize(25, 11);
   });
 }); */
 
-/* groupH.addUserToGroup(25, 13); */
+/* groupH.addUserToGroup(27, 16); */
 
 /* accessHandler.getAccessByGroupID(13).then((element) => {
   console.log(element);
@@ -51,8 +51,8 @@ authorizer.authorize(25, 11);
 }); */
 
 /* accessHandler.remove(10); */
-/* 
-accessHandler.create(13, access); */
+
+/* accessHandler.create(16, access); */
 
 /* userHandler.checkIfUsersExist().then((state) => {
   console.log(state);
@@ -74,21 +74,21 @@ accessHandler.create(13, access); */
   });
 }); */
 
-/* groupH.create("guest"); */
+/* groupH.create("preseptor"); */
 /* groupH.remove(12); */
 
-/* user.userName = "dixon";
+/* user.userName = "niky";
 user.password = "123456";
 
 let userData = Object.assign({}, UserData);
 
-userData.name = "mateo";
-userData.surname = "roca";
-userData.dni = "39102838";
-userData.email = "teico@gmail.com";
-userData.gender = "male";
+userData.name = "nicol";
+userData.surname = "hernandez";
+userData.dni = "23456543";
+userData.email = "niky@gmail.com";
+userData.gender = "female";
 userData.phoneNumber = "2235959844";
-userData.userMembership = "ceo";
+userData.userMembership = "director";
 userData.isActive = 1; */
 
 /* userHandler.showAll(); */
