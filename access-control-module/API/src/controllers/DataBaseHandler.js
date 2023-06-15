@@ -39,9 +39,6 @@ class DataBaseHandler {
     this.DB.query(query, (error, results, fields) => {
       if (error) {
         console.error("QUERY ERROR:", error);
-        this.DB.end(() => {
-          console.log("Close DB");
-        });
       } else {
         return true;
       }

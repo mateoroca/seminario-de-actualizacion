@@ -1,15 +1,19 @@
 class UserHandler {
-  constructor(DataBaseHandler) {
+  constructor(DataBaseHandler, innerGroupHandler) {
     this.DBHandler = DataBaseHandler;
+    this.groupH = innerGroupHandler;
   }
-  create(data) {
-    this.DBHandler.connect();
+  async create(data) {
     const Data = {
       paramName1: data.userName,
       paramName2: data.password,
     };
 
-    this.DBHandler.executeSPWithData("createUser", Data);
+    await this.DBHandler.executeSPWithData("createUser", Data);
+
+    let userID = await this.getIdByUserName(Data.paramName1);
+    //set user on guest group by default
+    this.groupH.addUserToGroup(userID, 15);
   }
 
   createUserData(id, data) {
@@ -75,8 +79,6 @@ class UserHandler {
 
   getIdByUserName(userName) {
     return new Promise((resolve, reject) => {
-      this.DBHandler.DB.connect();
-
       this.DBHandler.DB.query(
         "CALL getUserIdByUserName(?, @userId)",
         [userName],
@@ -96,7 +98,6 @@ class UserHandler {
             (err, results) => {
               if (err) {
                 console.error("Error al obtener el valor de retorno:", err);
-                this.DBHandler.DB.end();
                 reject(err);
                 return;
               }

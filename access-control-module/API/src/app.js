@@ -23,8 +23,9 @@ server.listen(port, () => {
 });
 
 let dataBaseHandler = new DataBaseHandler();
-let userHandler = new UserHandler(dataBaseHandler);
 let groupH = new GroupHandler(dataBaseHandler);
+let userHandler = new UserHandler(dataBaseHandler, groupH);
+
 let accessHandler = new AccessHandler(dataBaseHandler);
 let authorizer = new Authorizer(accessHandler, groupH, userHandler);
 
@@ -35,7 +36,7 @@ access.name = "readData";
 access.description = "access to read data";
 access.path = "userHandler/read";
 
-authorizer.authorize(27, 14);
+/* authorizer.authorize(27, 14); */
 
 /* groupH.getGroupIDByUserID(25).then((res) => {
   res.forEach((element) => {
@@ -77,10 +78,10 @@ authorizer.authorize(27, 14);
 /* groupH.create("preseptor"); */
 /* groupH.remove(12); */
 
-/* user.userName = "niky";
-user.password = "123456";
+/* user.userName = "mark";
+user.password = "123456"; */
 
-let userData = Object.assign({}, UserData);
+/* let userData = Object.assign({}, UserData);
 
 userData.name = "nicol";
 userData.surname = "hernandez";
