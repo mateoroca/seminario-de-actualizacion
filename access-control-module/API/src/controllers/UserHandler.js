@@ -24,7 +24,6 @@ class UserHandler {
       param4: data.gender,
       param5: data.phoneNumber,
       param6: data.email,
-      param7: data.userMembership,
       param8: data.isActive,
     };
     this.DBHandler.executeSPByIdWithData("createUserData", Data, id);

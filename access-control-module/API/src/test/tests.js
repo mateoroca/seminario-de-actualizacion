@@ -1,11 +1,11 @@
-const { AccessHandler } = require("./controllers/AccessHandler.js");
-const { Authorizer } = require("./controllers/Authorizer.js");
-const { UserHandler } = require("./controllers/UserHandler.js");
-const { User } = require("./models/User.js");
-const { UserData } = require("./models/UserData.js");
-const { DataBaseHandler } = require("./controllers/DataBaseHandler.js");
-const { GroupHandler } = require("./controllers/GroupHandler.js");
-const { Access } = require("./models/access.js");
+const { AccessHandler } = require("../controllers/AccessHandler.js");
+const { Authorizer } = require("../controllers/Authorizer.js");
+const { UserHandler } = require("../controllers/UserHandler.js");
+const { User } = require("../models/User.js");
+const { UserData } = require("../models/UserData.js");
+const { DataBaseHandler } = require("../controllers/DataBaseHandler.js");
+const { GroupHandler } = require("../controllers/GroupHandler.js");
+const { Access } = require("../models/access.js");
 
 const http = require("http");
 require("dotenv").config();
@@ -78,8 +78,8 @@ access.path = "userHandler/read";
 /* groupH.create("preseptor"); */
 /* groupH.remove(12); */
 
-/* user.userName = "mark";
-user.password = "123456"; */
+user.userName = "teico";
+user.password = "123456";
 
 /* let userData = Object.assign({}, UserData);
 
