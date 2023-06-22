@@ -7,6 +7,7 @@ const { UserData } = require("./src/models/UserData.js");
 const { DataBaseHandler } = require("./src/controllers/DataBaseHandler.js");
 const { GroupHandler } = require("./src/controllers/GroupHandler.js");
 const { Access } = require("./src/models/access.js");
+const { Sanitizer } = require("./src/sanitizer/sanitizer");
 require("dotenv").config();
 
 const app = new Server();
@@ -27,8 +28,10 @@ app.post("/UserHandler/signup", (req, res) => {
   });
   req.on("end", () => {
     const requestData = JSON.parse(body);
+    let sanitizeData =
+      requestData.userName.trim() + requestData.password.trim();
 
-    if (requestData != null && requestData !== "") {
+    if (sanitizeData != null && sanitizeData !== "") {
       let user = Object.assign({}, User);
       user.userName = requestData.userName;
       user.password = requestData.password;
@@ -38,9 +41,56 @@ app.post("/UserHandler/signup", (req, res) => {
       let userHandler = new UserHandler(dataBaseHandler, groupH);
 
       /* userHandler.create(user); */
-      userHandler.showAll().then((users) => {
+      /* userHandler.showAll().then((users) => {
         res.end(JSON.stringify(users));
-      });
+      }); */
+    } else {
+      res.end(JSON.stringify({ message: "error empty data" }));
+    }
+  });
+});
+
+app.post("/UserHandler/signup/userData", (req, res) => {
+  let body = "";
+
+  req.on("data", (chunk) => {
+    body += chunk;
+  });
+  req.on("end", () => {
+    const requestData = JSON.parse(body);
+
+    const sanitizedData = new Sanitizer(requestData);
+    sanitizedData.trimData();
+    console.log(sanitizedData.data);
+
+    const isEmpty = sanitizedData.isDataEmpty();
+    console.log(isEmpty);
+
+    if (requestData != null && requestData !== "") {
+      let userData = Object.assign({}, UserData);
+      userData.name = requestData.name;
+      userData.surname = requestData.surname;
+      userData.dni = requestData.dni;
+      userData.email = requestData.email;
+      userData.gender = requestData.gender;
+      userData.phoneNumber = requestData.phoneNumber;
+      userData.isActive = 1;
+
+      let dataBaseHandler = new DataBaseHandler();
+      let groupH = new GroupHandler(dataBaseHandler);
+      let userHandler = new UserHandler(dataBaseHandler, groupH);
+
+      userHandler
+        .GetLastUserID()
+        .then((lastId) => {
+          userHandler.createUserData(lastId, userData);
+          res.end({ message: "success to create userdata" });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      res.end(JSON.stringify({ message: "error empty data" }));
     }
   });
 });

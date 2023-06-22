@@ -72,10 +72,6 @@ class UserHandler {
     return true;
   }
 
-  getGroupMemberShip(id) {
-    return true;
-  }
-
   getIdByUserName(userName) {
     return new Promise((resolve, reject) => {
       this.DBHandler.DB.query(
@@ -137,6 +133,21 @@ class UserHandler {
         if (exist.length > 0) {
           resolve(true);
         } else resolve(false);
+      });
+    });
+  }
+  async GetLastUserID() {
+    return new Promise((resolve, reject) => {
+      this.DBHandler.DB.query("CALL GetLastUserID()", (error, results) => {
+        if (error) {
+          console.error("Error:", error);
+          reject(error);
+          return;
+        }
+
+        const LastuserID = results[0];
+
+        resolve(LastuserID[0].last_user_id);
       });
     });
   }

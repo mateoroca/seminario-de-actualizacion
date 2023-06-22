@@ -8,7 +8,7 @@ const { GroupHandler } = require("../controllers/GroupHandler.js");
 const { Access } = require("../models/access.js");
 
 const http = require("http");
-require("dotenv").config();
+require("dotenv").config({ path: "../.env" });
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
@@ -16,7 +16,7 @@ const server = http.createServer((req, res) => {
   res.end();
 });
 
-const port = process.env.PORT || 3000;
+const port = 3030;
 
 server.listen(port, () => {
   console.log(`Server is lisening on port: ${port}`);
@@ -35,6 +35,8 @@ let access = Object.assign({}, Access);
 access.name = "readData";
 access.description = "access to read data";
 access.path = "userHandler/read";
+
+/* console.log(userHandler.GetLastUserID()); */
 
 /* authorizer.authorize(27, 14); */
 
@@ -78,8 +80,8 @@ access.path = "userHandler/read";
 /* groupH.create("preseptor"); */
 /* groupH.remove(12); */
 
-user.userName = "teico";
-user.password = "123456";
+/* user.userName = "teico";
+user.password = "123456"; */
 
 /* let userData = Object.assign({}, UserData);
 

@@ -40,6 +40,13 @@ body {
   font-size: 1.2em;
 }
 
+#heading2 {
+  text-align: center;
+  margin: 1em;
+  color: rgb(255, 255, 255);
+  font-size: 1.2em;
+}
+
 .field {
   display: flex;
   align-items: center;
@@ -53,6 +60,8 @@ body {
   background-color: #171717;
   box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
 }
+
+
 
 .input-icon {
   height: 1.3em;
@@ -74,6 +83,30 @@ body {
   flex-direction: row;
   margin-top: 2.5em;
 }
+
+.button0 {
+  padding: 0.5em;
+  padding-left: 1.1em;
+  padding-right: 1.1em;
+  border-radius: 5px;
+  margin-left: 4em;
+  border: none;
+  outline: none;
+  transition: .4s ease-in-out;
+  background-color: #252525;
+  color: white;
+
+
+}
+
+
+
+.button0:hover {
+  background-color: rgb(29, 56, 30);
+  color: white;
+}
+
+
 
 .button1 {
   padding: 0.5em;

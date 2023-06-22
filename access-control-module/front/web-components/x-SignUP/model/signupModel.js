@@ -1,9 +1,6 @@
-class LoginFormModel {
+class SignupModel {
   constructor() {}
-
-  logIn() {}
-
-  async signIn(data) {
+  async signUp(data) {
     if (data != null && data !== "") {
       try {
         let requestMetadata = {
@@ -12,7 +9,7 @@ class LoginFormModel {
         };
 
         let res = await fetch(
-          "http://localhost:3000/UserHandler/signup",
+          "http://localhost:3000/UserHandler/signup/userData",
           requestMetadata
         );
         res = await res.json();
@@ -20,10 +17,10 @@ class LoginFormModel {
       } catch (error) {
         alert(error.message);
       }
+    } else {
+      alert("error empty data (front side)");
     }
   }
-
-  recoverPassword() {}
 }
 
-export { LoginFormModel };
+export { SignupModel };

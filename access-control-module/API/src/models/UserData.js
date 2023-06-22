@@ -6,7 +6,6 @@ let UserData = {
   gender: "",
   phoneNumber: "",
   email: "",
-  userMembership: "",
   isActive: 0,
 };
 

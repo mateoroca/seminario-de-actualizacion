@@ -8,6 +8,7 @@ class LoginFormController {
     this.view.btnSignUp.addEventListener("click", (e) => {
       e.preventDefault();
       this.onButtomSignUpClick();
+      this.triggerSignupInstance();
     });
   }
 
@@ -23,6 +24,10 @@ class LoginFormController {
     this.model.signIn(DATA).then((res) => {
       console.log(res);
     });
+  }
+  triggerSignupInstance() {
+    const event = new CustomEvent("trigger-signup-instance");
+    dispatchEvent(event);
   }
 }
 
