@@ -1,4 +1,4 @@
-class HoldingComponent extends HTMLElement {
+class HoldinComponent extends HTMLElement {
   constructor() {
     super();
   }
@@ -120,12 +120,12 @@ class HoldingComponent extends HTMLElement {
     this.appendChild(style);
 
     container.addEventListener("click", () => {
-      const event = new CustomEvent("login");
+      const event = new CustomEvent("trigger-login-instance");
       dispatchEvent(event);
     });
   }
 }
 
-customElements.define("holding-component", HoldingComponent);
+customElements.define("holding-component", HoldinComponent);
 
-export { HoldingComponent };
+export { HoldinComponent };
