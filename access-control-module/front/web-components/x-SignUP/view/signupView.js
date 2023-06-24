@@ -9,7 +9,7 @@ class SignUpView extends HTMLElement {
 
     this.heading = document.createElement("p");
     this.heading.id = "heading";
-    this.heading.textContent = "Logn Up";
+    this.heading.textContent = "Sign Up";
 
     this.fieldName = document.createElement("div");
     this.fieldName.classList.add("field");
