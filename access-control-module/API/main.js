@@ -24,7 +24,7 @@ app.post("/UserHandler/signup", (req, res) => {
   let body = "";
 
   req.on("data", (chunk) => {
-    body += chunk;
+    body += chunk.toString();
   });
   req.on("end", () => {
     const requestData = JSON.parse(body);
@@ -40,10 +40,10 @@ app.post("/UserHandler/signup", (req, res) => {
       let groupH = new GroupHandler(dataBaseHandler);
       let userHandler = new UserHandler(dataBaseHandler, groupH);
 
-      /* userHandler.create(user); */
-      /* userHandler.showAll().then((users) => {
+      userHandler.create(user);
+      userHandler.showAll().then((users) => {
         res.end(JSON.stringify(users));
-      }); */
+      });
     } else {
       res.end(JSON.stringify({ message: "error empty data" }));
     }
@@ -54,7 +54,7 @@ app.post("/UserHandler/signup/userData", (req, res) => {
   let body = "";
 
   req.on("data", (chunk) => {
-    body += chunk;
+    body += chunk.toString();
   });
   req.on("end", () => {
     const requestData = JSON.parse(body);
@@ -73,7 +73,7 @@ app.post("/UserHandler/signup/userData", (req, res) => {
       userData.dni = requestData.dni;
       userData.email = requestData.email;
       userData.gender = requestData.gender;
-      userData.phoneNumber = requestData.phoneNumber;
+      userData.phoneNumber = requestData.phonenumber;
       userData.isActive = 1;
 
       let dataBaseHandler = new DataBaseHandler();
@@ -84,7 +84,7 @@ app.post("/UserHandler/signup/userData", (req, res) => {
         .GetLastUserID()
         .then((lastId) => {
           userHandler.createUserData(lastId, userData);
-          res.end({ message: "success to create userdata" });
+          res.end(JSON.stringify({ message: "success to create userdata" }));
         })
         .catch((error) => {
           console.error("Error:", error);

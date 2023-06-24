@@ -1,17 +1,21 @@
 import { LoginForm } from "./web-components/x-Loginform/LoginForm.js";
-import { SignUpView } from "./web-components/x-SignUP/view/signupView.js";
+import { SignUp } from "./web-components/x-SignUP/signup.js";
+import { HoldingComponent } from "./web-components/x-Holding/Holding.js";
 
 function main() {
+  let holdin_x = new HoldingComponent();
+  let signup = new SignUp();
   let loginform = new LoginForm();
+  document.body.appendChild(holdin_x);
 
-  document.body.appendChild(loginform);
+  window.addEventListener("login", () => {
+    document.body.removeChild(holdin_x);
+    document.body.appendChild(loginform);
+  });
 
   window.addEventListener("trigger-signup-instance", () => {
-    /* let signup = new SignUp(); */
-    let view = new SignUpView();
-
     document.body.removeChild(loginform);
-    document.body.appendChild(view);
+    document.body.appendChild(signup);
   });
 }
 

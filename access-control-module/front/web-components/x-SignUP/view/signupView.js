@@ -83,10 +83,6 @@ class SignUpView extends HTMLElement {
 
     this.container.appendChild(this.form);
 
-    let style = document.createElement("style");
-    style.innerText = `@import './style/style.css'`;
-
-    this.appendChild(style);
     this.appendChild(this.container);
   }
 }

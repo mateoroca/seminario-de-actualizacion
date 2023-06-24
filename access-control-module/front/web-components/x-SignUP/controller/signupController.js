@@ -1,11 +1,11 @@
 class SignupController {
   constructor(viewReference, modelReference) {
-    this.view = new viewReference();
-    this.model = new modelReference();
+    this.view = viewReference;
+    this.model = modelReference;
   }
   enable() {
     this.view.buttonSubmit.addEventListener("click", (e) => {
-      e.preventDefault();
+      /*  e.preventDefault(); */
       this.onButtomSubmmitClick();
     });
   }
@@ -19,11 +19,11 @@ class SignupController {
       surname: this.view.inputSurname.value,
       dni: this.view.inputDni.value,
       email: this.view.inputEmail.value,
-      gender: this.value.inputGender.value,
-      phonenumber: this.inputPhoneNumber.value,
+      gender: this.view.inputGender.value,
+      phonenumber: this.view.inputPhoneNumber.value,
     };
     this.model.signUp(DATA).then((res) => {
-      console.log(res);
+      alert(res);
     });
   }
 }
