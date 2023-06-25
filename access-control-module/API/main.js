@@ -59,11 +59,13 @@ app.post("/UserHandler/signup/userData", (req, res) => {
   req.on("end", () => {
     const requestData = JSON.parse(body);
 
-    const sanitizedData = new Sanitizer(requestData);
-    sanitizedData.trimData();
+    const sanitizedData = new Sanitizer();
+    sanitizedData.trimData(requestData);
     console.log(sanitizedData.data);
-
-    const isEmpty = sanitizedData.isDataEmpty();
+    console.log(
+      `Es tipo string : ${sanitizedData.validateTypeString(requestData)}`
+    );
+    const isEmpty = sanitizedData.isDataEmpty(requestData);
     console.log(isEmpty);
 
     if (requestData != null && requestData !== "") {

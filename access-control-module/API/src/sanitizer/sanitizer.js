@@ -1,12 +1,18 @@
 class Sanitizer {
-  constructor(data) {
-    this.data = data;
-  }
+  constructor() {}
 
-  trimData() {
-    for (const prop in this.data) {
+  trimData(data) {
+    for (const prop in data) {
       if (typeof this.data[prop] === "string") {
         this.data[prop] = this.data[prop].trim();
+      }
+    }
+  }
+
+  validateTypeString(data) {
+    for (const prop in data) {
+      if (typeof this.data[prop] === "string") {
+        return true;
       }
     }
   }
