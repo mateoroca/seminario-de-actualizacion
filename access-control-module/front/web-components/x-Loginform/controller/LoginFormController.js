@@ -5,15 +5,21 @@ class LoginFormController {
   }
 
   enable() {
-    this.view.btnSignUp.addEventListener("click", (e) => {
+    this.view.button2.addEventListener("click", (e) => {
       e.preventDefault();
       this.onButtomSignUpClick();
       this.triggerSignupInstance();
+    });
+
+    this.view.button3.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.onbuttomForgotPasswordClick();
     });
   }
 
   disable() {
     this.view.btnSignUp = null;
+    this.view.btnForgotPassw = null;
   }
 
   onButtomSignUpClick(e) {
@@ -25,6 +31,12 @@ class LoginFormController {
       console.log(res);
     });
   }
+  onbuttomForgotPasswordClick() {
+    const event = new CustomEvent("trigger-verify");
+
+    dispatchEvent(event);
+  }
+
   triggerSignupInstance() {
     const event = new CustomEvent("trigger-signup-instance");
     dispatchEvent(event);

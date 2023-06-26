@@ -3,7 +3,7 @@ const { Authorizer } = require("../controllers/Authorizer.js");
 const { UserHandler } = require("../controllers/UserHandler.js");
 const { User } = require("../models/User.js");
 const { UserData } = require("../models/UserData.js");
-const { DataBaseHandler } = require("../controllers/DataBaseHandler.js");
+const { DataBaseHandlerTest } = require("./DataBaseHandlerTest.js");
 const { GroupHandler } = require("../controllers/GroupHandler.js");
 const { Access } = require("../models/access.js");
 
@@ -22,7 +22,7 @@ server.listen(port, () => {
   console.log(`Server is lisening on port: ${port}`);
 });
 
-let dataBaseHandler = new DataBaseHandler();
+let dataBaseHandler = new DataBaseHandlerTest();
 let groupH = new GroupHandler(dataBaseHandler);
 let userHandler = new UserHandler(dataBaseHandler, groupH);
 
@@ -35,6 +35,8 @@ let access = Object.assign({}, Access);
 access.name = "readData";
 access.description = "access to read data";
 access.path = "userHandler/read";
+
+userHandler.delete(41);
 
 /* console.log(userHandler.GetLastUserID()); */
 

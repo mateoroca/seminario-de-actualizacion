@@ -28,8 +28,7 @@ app.post("/UserHandler/signup", (req, res) => {
   });
   req.on("end", () => {
     const requestData = JSON.parse(body);
-    let sanitizeData =
-      requestData.userName.trim() + requestData.password.trim();
+    let zn = Sanitizer();
 
     if (sanitizeData != null && sanitizeData !== "") {
       let user = Object.assign({}, User);

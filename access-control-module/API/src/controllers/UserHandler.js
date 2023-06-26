@@ -67,9 +67,12 @@ class UserHandler {
     });
   }
 
+  delete(id) {
+    this.DBHandler.executeSPById("DeleteUser", id);
+  }
+
   deleteUserData(id) {
     this.DBHandler.executeSPById("deleteUserData", id);
-    return true;
   }
 
   getIdByUserName(userName) {

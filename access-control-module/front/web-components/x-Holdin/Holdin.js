@@ -1,4 +1,4 @@
-class HoldinComponent extends HTMLElement {
+class Holdin extends HTMLElement {
   constructor() {
     super();
   }
@@ -116,7 +116,7 @@ class HoldinComponent extends HTMLElement {
     this.appendChild(container);
 
     let style = document.createElement("style");
-    style.innerText = `@import './style/holdingStyle.css'`;
+    style.innerText = `@import './web-components/x-Holdin/style/holdingStyle.css'`;
     this.appendChild(style);
 
     container.addEventListener("click", () => {
@@ -126,6 +126,6 @@ class HoldinComponent extends HTMLElement {
   }
 }
 
-customElements.define("holding-component", HoldinComponent);
+customElements.define("x-holding", Holdin);
 
-export { HoldinComponent };
+export { Holdin };

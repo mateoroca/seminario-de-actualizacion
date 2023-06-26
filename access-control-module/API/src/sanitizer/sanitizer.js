@@ -3,23 +3,23 @@ class Sanitizer {
 
   trimData(data) {
     for (const prop in data) {
-      if (typeof this.data[prop] === "string") {
-        this.data[prop] = this.data[prop].trim();
+      if (typeof data[prop] === "string") {
+        data[prop] = data[prop].trim();
       }
     }
   }
 
   validateTypeString(data) {
     for (const prop in data) {
-      if (typeof this.data[prop] === "string") {
+      if (typeof data[prop] === "string") {
         return true;
       }
     }
   }
 
-  isDataEmpty() {
-    for (const prop in this.data) {
-      if (this.data[prop] === null || this.data[prop].trim() === "") {
+  isDataEmpty(data) {
+    for (const prop in data) {
+      if (data[prop] === null || data[prop].trim() === "") {
         return true;
       }
     }

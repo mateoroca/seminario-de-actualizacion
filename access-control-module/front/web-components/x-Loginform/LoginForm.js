@@ -10,7 +10,7 @@ class LoginForm extends HTMLElement {
     this.model = new LoginFormModel();
     this.controller = new LoginFormController(this.view, this.model);
     let style = document.createElement("style");
-    style.innerText = `@import './style/style.css'`;
+    style.innerText = `@import './web-components/x-Loginform/style/style.css'`;
     this.appendChild(style);
     this.appendChild(this.view);
   }

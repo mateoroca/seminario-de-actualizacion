@@ -9,7 +9,7 @@ class SignUp extends HTMLElement {
     this.model = new SignupModel();
     this.controller = new SignupController(this.view, this.model);
     let style = document.createElement("style");
-    style.innerText = `@import './style/style.css'`;
+    style.innerText = `@import 'web-components/x-SignUP/style/style.css'`;
     this.appendChild(style);
     this.appendChild(this.view);
   }
