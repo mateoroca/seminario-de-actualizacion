@@ -28,9 +28,14 @@ app.post("/UserHandler/signup", (req, res) => {
   });
   req.on("end", () => {
     const requestData = JSON.parse(body);
-    let zn = Sanitizer();
 
-    if (sanitizeData != null && sanitizeData !== "") {
+    const sanitizedData = new Sanitizer();
+    sanitizedData.trimData(requestData);
+
+    const isStryng = sanitizedData.validateTypeString(requestData);
+    const isEmpty = sanitizedData.isDataEmpty(requestData);
+
+    if (!isEmpty && isStryng) {
       let user = Object.assign({}, User);
       user.userName = requestData.userName;
       user.password = requestData.password;
@@ -40,9 +45,8 @@ app.post("/UserHandler/signup", (req, res) => {
       let userHandler = new UserHandler(dataBaseHandler, groupH);
 
       userHandler.create(user);
-      userHandler.showAll().then((users) => {
-        res.end(JSON.stringify(users));
-      });
+
+      res.end(JSON.stringify({ value: true }));
     } else {
       res.end(JSON.stringify({ message: "error empty data" }));
     }
@@ -60,14 +64,14 @@ app.post("/UserHandler/signup/userData", (req, res) => {
 
     const sanitizedData = new Sanitizer();
     sanitizedData.trimData(requestData);
-    console.log(sanitizedData.data);
     console.log(
       `Es tipo string : ${sanitizedData.validateTypeString(requestData)}`
     );
+    const isStryng = sanitizedData.validateTypeString(requestData);
     const isEmpty = sanitizedData.isDataEmpty(requestData);
     console.log(isEmpty);
 
-    if (requestData != null && requestData !== "") {
+    if (!isEmpty && isStryng) {
       let userData = Object.assign({}, UserData);
       userData.name = requestData.name;
       userData.surname = requestData.surname;
