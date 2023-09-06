@@ -5,10 +5,9 @@ class LoginFormController {
   }
 
   enable() {
-    this.view.button2.addEventListener("click", (e) => {
+    this.view.button1.addEventListener("click", (e) => {
       e.preventDefault();
-      this.onButtomSignUpClick();
-      this.triggerSignupInstance();
+      this.onButtomLogInClick();
     });
 
     this.view.button3.addEventListener("click", (e) => {
@@ -18,27 +17,22 @@ class LoginFormController {
   }
 
   disable() {
-    this.view.btnSignUp = null;
-    this.view.btnForgotPassw = null;
+    this.view.button1 = null;
+    this.view.button3 = null;
   }
 
-  onButtomSignUpClick(e) {
+  onButtomLogInClick(e) {
     let DATA = {
       userName: this.view.input1.value,
       password: this.view.input2.value,
     };
-    this.model.signIn(DATA).then((res) => {
+    this.model.login(DATA).then((res) => {
       console.log(res);
     });
   }
   onbuttomForgotPasswordClick() {
     const event = new CustomEvent("trigger-verify");
 
-    dispatchEvent(event);
-  }
-
-  triggerSignupInstance() {
-    const event = new CustomEvent("trigger-signup-instance");
     dispatchEvent(event);
   }
 }

@@ -27,6 +27,7 @@ body {
   position: relative;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.082);
   border-radius: 15px;
+  margin-top: 2rem;
 }
 
 .mainHeading {

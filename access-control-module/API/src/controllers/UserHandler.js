@@ -1,18 +1,26 @@
+const crypto = require("crypto");
+
 class UserHandler {
   constructor(DataBaseHandler, innerGroupHandler) {
     this.DBHandler = DataBaseHandler;
     this.groupH = innerGroupHandler;
   }
   async create(data) {
+    const hash = crypto.createHash("sha256");
+
+    hash.update(data.password);
+
+    const encryptedPassword = hash.digest("hex");
+
     const Data = {
       paramName1: data.userName,
-      paramName2: data.password,
+      paramName2: encryptedPassword,
     };
 
     await this.DBHandler.executeSPWithData("createUser", Data);
 
-    let userID = await this.getIdByUserName(Data.paramName1);
-    //set user on guest group by default
+    let userID = await this.getIdByUserName(data.userName);
+
     this.groupH.addUserToGroup(userID, 15);
   }
 
@@ -20,9 +28,6 @@ class UserHandler {
     const Data = {
       param1: data.name,
       param2: data.surname,
-      param3: data.dni,
-      param4: data.gender,
-      param5: data.phoneNumber,
       param6: data.email,
       param8: data.isActive,
     };
@@ -33,11 +38,7 @@ class UserHandler {
     const Data = {
       param1: data.name,
       param2: data.surname,
-      param3: data.dni,
-      param4: data.gender,
-      param5: data.phoneNumber,
       param6: data.email,
-      param7: data.userMembership,
       param8: data.isActive,
     };
     this.DBHandler.executeStoredProcedureByIdWithData(
@@ -152,6 +153,30 @@ class UserHandler {
 
         resolve(LastuserID[0].last_user_id);
       });
+    });
+  }
+  async GetUserInformation(id) {
+    return new Promise((resolve, reject) => {
+      this.DBHandler.DB.query(
+        "CALL GetUserInformation(?)", // Aquí pasamos el valor de id como argumento
+        [id],
+        (error, results) => {
+          if (error) {
+            console.error("Error:", error);
+            reject(error);
+            return;
+          }
+
+          const userInformation = results[0];
+          const userInfo = {
+            id: userInformation[0]._user_id,
+            userName: userInformation[0]._user_name,
+            password: userInformation[0]._user_password,
+          };
+
+          resolve(userInfo);
+        }
+      );
     });
   }
 }

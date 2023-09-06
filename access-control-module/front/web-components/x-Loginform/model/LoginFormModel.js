@@ -1,31 +1,31 @@
+import { LocalStorageHandler } from "../../core/LocalStorageHandler.js";
+import { ApiClient } from "../../core/ApiClient.js";
+
 class LoginFormModel {
-  constructor() {}
+  constructor() {
+    this.localStorageH = new LocalStorageHandler();
+    this.apiClient = new ApiClient("http://localhost:3000/");
+  }
+  async login(data) {
+    try {
+      let response = await this.apiClient.makeApiCall(
+        "UserHandler/login",
+        "POST",
+        data
+      );
 
-  logIn() {}
+      const id = response.userId;
+      const token = response.Token;
+      const message = response.message;
 
-  async signIn(data) {
-    if (data != null && data !== "") {
-      try {
-        let requestMetadata = {
-          method: "POST",
-          body: JSON.stringify(data),
-        };
+      console.log(message);
 
-        let res = await fetch(
-          "http://localhost:3000/UserHandler/signup",
-          requestMetadata
-        );
-        res = await res.json();
-        return res;
-      } catch (error) {
-        alert(error.message);
-      }
-    } else {
-      console.log("error empty data");
+      this.localStorageH.setOnlocalStorage("userId:", id);
+      this.localStorageH.setOnlocalStorage("Token:", token);
+    } catch (error) {
+      console.log(error);
     }
   }
-
-  recoverPassword() {}
 }
 
 export { LoginFormModel };

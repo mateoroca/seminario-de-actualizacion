@@ -6,6 +6,8 @@ const { UserData } = require("../models/UserData.js");
 const { DataBaseHandlerTest } = require("./DataBaseHandlerTest.js");
 const { GroupHandler } = require("../controllers/GroupHandler.js");
 const { Access } = require("../models/access.js");
+const { SessionHandler } = require("../controllers/SessionHandler.js");
+const { TokenHandler } = require("../controllers/TokenHandler.js");
 
 const http = require("http");
 require("dotenv").config({ path: "../.env" });
@@ -36,7 +38,13 @@ access.name = "readData";
 access.description = "access to read data";
 access.path = "userHandler/read";
 
-userHandler.delete(41);
+/* const SH = new SessionHandler();
+SH.startSession("1"); */
+
+/* const TokenH = new TokenHandler();
+console.log(TokenH.create("1")); */
+
+/* userHandler.delete(41); */
 
 /* console.log(userHandler.GetLastUserID()); */
 
@@ -89,11 +97,7 @@ user.password = "123456"; */
 
 userData.name = "nicol";
 userData.surname = "hernandez";
-userData.dni = "23456543";
 userData.email = "niky@gmail.com";
-userData.gender = "female";
-userData.phoneNumber = "2235959844";
-userData.userMembership = "director";
 userData.isActive = 1; */
 
 /* userHandler.showAll(); */

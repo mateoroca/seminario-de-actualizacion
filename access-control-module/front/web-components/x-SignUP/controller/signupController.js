@@ -5,7 +5,7 @@ class SignupController {
   }
   enable() {
     this.view.buttonSubmit.addEventListener("click", (e) => {
-      /*  e.preventDefault(); */
+      e.preventDefault();
       this.onButtomSubmmitClick();
     });
   }
@@ -14,17 +14,26 @@ class SignupController {
   }
 
   onButtomSubmmitClick() {
-    let DATA = {
-      name: this.view.inputName.value,
-      surname: this.view.inputSurname.value,
-      dni: this.view.inputDni.value,
-      email: this.view.inputEmail.value,
-      gender: this.view.inputGender.value,
-      phonenumber: this.view.inputPhoneNumber.value,
-    };
-    this.model.signUp(DATA).then((res) => {
-      alert(res);
-    });
+    if (this.view.inputPassw.value == this.view.inputCheckPassw.value) {
+      let DATA = {
+        userName: this.view.inputUserName.value,
+        email: this.view.inputEmail.value,
+        name: this.view.inputName.value,
+        surname: this.view.inputSurname.value,
+        password: this.view.inputPassw.value,
+      };
+
+      this.model
+        .signUp(DATA)
+        .then(() => {
+          location.reload();
+        })
+        .catch((error) => {
+          console.error("Error en la solicitud al servidor:", error);
+        });
+    } else {
+      alert("error the password must be the same");
+    }
   }
 }
 

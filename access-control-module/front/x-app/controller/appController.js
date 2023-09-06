@@ -9,7 +9,7 @@ class StateApplicationHandler {
     }
 
     this.currentState = newState;
-    document.body.appendChild(this.currentState);
+    this.appendChild(this.currentState);
   }
 }
 

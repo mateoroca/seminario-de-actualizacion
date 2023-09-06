@@ -7,6 +7,13 @@ class Server {
       GET: {},
       POST: {},
     };
+
+    this.headers = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
+      "Access-Control-Allow-Headers": "content-type, custom-token, Id",
+      "Content-Type": "application/json",
+    };
   }
 
   get(path, handler) {
@@ -18,21 +25,28 @@ class Server {
   }
 
   handleRequest(req, res) {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
     const { pathname } = url.parse(req.url, true);
     const method = req.method;
+
+    if (method === "OPTIONS") {
+      this.handleOptions(res);
+      return;
+    }
 
     const handler = this.routes[method][pathname] || this.routes[method]["*"];
 
     if (handler) {
+      res.writeHead(200, this.headers);
       handler(req, res);
     } else {
       res.statusCode = 404;
-      res.end("Not Found");
+      res.end("endpoint Not Found");
     }
+  }
+
+  handleOptions(res) {
+    res.writeHead(204, this.headers);
+    res.end();
   }
 
   start(port) {

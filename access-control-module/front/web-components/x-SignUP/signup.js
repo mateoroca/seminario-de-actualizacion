@@ -1,12 +1,12 @@
 import { SignUpView } from "./view/signupView.js";
-import { SignupModel } from "./model/signupModel.js";
 import { SignupController } from "./controller/signupController.js";
+import { SignUpModel } from "./model/signUpModel.js";
 
 class SignUp extends HTMLElement {
   constructor() {
     super();
     this.view = new SignUpView();
-    this.model = new SignupModel();
+    this.model = new SignUpModel();
     this.controller = new SignupController(this.view, this.model);
     let style = document.createElement("style");
     style.innerText = `@import 'web-components/x-SignUP/style/style.css'`;
