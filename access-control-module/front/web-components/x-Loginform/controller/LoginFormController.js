@@ -21,19 +21,21 @@ class LoginFormController {
     this.view.button3 = null;
   }
 
-  onButtomLogInClick(e) {
+  async onButtomLogInClick(e) {
     let DATA = {
       userName: this.view.input1.value,
       password: this.view.input2.value,
     };
-    this.model.login(DATA).then((res) => {
-      console.log(res);
-    });
+    let res = await this.model.login(DATA);
+    if (res.status) {
+      window.dispatchEvent(new Event("trigger-loggedIn-instance"));
+      console.log(res.message);
+    } else {
+      console.log(res.message);
+    }
   }
   onbuttomForgotPasswordClick() {
-    const event = new CustomEvent("trigger-verify");
-
-    dispatchEvent(event);
+    window.dispatchEvent(new Event("trigger-verify"));
   }
 }
 

@@ -11,7 +11,7 @@ class Server {
     this.headers = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
-      "Access-Control-Allow-Headers": "content-type, custom-token, Id",
+      "Access-Control-Allow-Headers": "content-type, custom-token, id",
       "Content-Type": "application/json",
     };
   }
@@ -27,9 +27,11 @@ class Server {
   handleRequest(req, res) {
     const { pathname } = url.parse(req.url, true);
     const method = req.method;
+    const customToken = req.headers["custom-token"];
 
     if (method === "OPTIONS") {
-      this.handleOptions(res);
+      res.writeHead(204, this.headers);
+      res.end();
       return;
     }
 
@@ -39,14 +41,10 @@ class Server {
       res.writeHead(200, this.headers);
       handler(req, res);
     } else {
+      console.log(`Solicitud a ${method} ${pathname} no encontrada`);
       res.statusCode = 404;
       res.end("endpoint Not Found");
     }
-  }
-
-  handleOptions(res) {
-    res.writeHead(204, this.headers);
-    res.end();
   }
 
   start(port) {

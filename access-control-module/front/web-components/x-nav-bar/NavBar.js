@@ -3,12 +3,16 @@ import { navBarModel } from "./model/navBarModel.js";
 import { navBarController } from "./controller/nabBarController.js";
 
 class navBar extends HTMLElement {
-  constructor() {
+  constructor(
+    innerview = navBarView,
+    innerController = navBarController,
+    innerModel = navBarModel
+  ) {
     super();
 
-    this.view = new navBarView();
-    this.model = new navBarModel();
-    this.controller = new navBarController(this.view, this.model);
+    this.view = new innerview();
+    this.model = new innerModel();
+    this.controller = new innerController(this.view, this.model);
     let style = document.createElement("style");
     style.innerText = `@import './web-components/x-nav-Bar/style/style.css'`;
     this.appendChild(style);

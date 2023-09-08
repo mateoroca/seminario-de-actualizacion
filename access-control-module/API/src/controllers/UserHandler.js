@@ -1,4 +1,4 @@
-const crypto = require("crypto");
+const { Encryptor } = require("./Encryptor.js");
 
 class UserHandler {
   constructor(DataBaseHandler, innerGroupHandler) {
@@ -6,11 +6,8 @@ class UserHandler {
     this.groupH = innerGroupHandler;
   }
   async create(data) {
-    const hash = crypto.createHash("sha256");
-
-    hash.update(data.password);
-
-    const encryptedPassword = hash.digest("hex");
+    const encryptor = new Encryptor();
+    const encryptedPassword = encryptor.encrypt(data.password);
 
     const Data = {
       paramName1: data.userName,

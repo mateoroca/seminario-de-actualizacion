@@ -9,19 +9,20 @@ class LoginFormModel {
   async login(data) {
     try {
       let response = await this.apiClient.makeApiCall(
-        "UserHandler/login",
+        "sessionHandler/login",
         "POST",
         data
       );
 
       const id = response.userId;
       const token = response.Token;
-      const message = response.message;
-
-      console.log(message);
-
-      this.localStorageH.setOnlocalStorage("userId:", id);
-      this.localStorageH.setOnlocalStorage("Token:", token);
+      if (response.status) {
+        this.localStorageH.setOnlocalStorage("userId", id);
+        this.localStorageH.setOnlocalStorage("Token", token);
+        return response;
+      } else {
+        return response;
+      }
     } catch (error) {
       console.log(error);
     }

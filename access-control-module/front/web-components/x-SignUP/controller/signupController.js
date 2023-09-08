@@ -6,14 +6,14 @@ class SignupController {
   enable() {
     this.view.buttonSubmit.addEventListener("click", (e) => {
       e.preventDefault();
-      this.onButtomSubmmitClick();
+      this.onButtomSignUpClick();
     });
   }
   disable() {
     this.view.buttonSubmit = null;
   }
 
-  onButtomSubmmitClick() {
+  async onButtomSignUpClick() {
     if (this.view.inputPassw.value == this.view.inputCheckPassw.value) {
       let DATA = {
         userName: this.view.inputUserName.value,
@@ -23,14 +23,9 @@ class SignupController {
         password: this.view.inputPassw.value,
       };
 
-      this.model
-        .signUp(DATA)
-        .then(() => {
-          location.reload();
-        })
-        .catch((error) => {
-          console.error("Error en la solicitud al servidor:", error);
-        });
+      let res = await this.model.signUp(DATA);
+      alert(res);
+      await location.reload();
     } else {
       alert("error the password must be the same");
     }

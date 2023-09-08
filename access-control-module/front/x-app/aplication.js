@@ -4,11 +4,19 @@ import { Holdin } from "../web-components/x-Holdin/Holdin.js";
 import { VerifyView } from "../web-components/x-verify/view/verifyView.js";
 import { navBar } from "../web-components/x-nav-bar/NavBar.js";
 import { AppView } from "../x-app/view/appView.js";
+import { navBarView2 } from "../web-components/x-nav-bar/views/nabBar-view2.js";
+import { navBarModel2 } from "../web-components/x-nav-bar/model/navBarModel2.js";
+import { navBarController2 } from "../web-components/x-nav-bar/controller/nabBarController2.js";
 
 class Application extends HTMLElement {
   constructor() {
     super();
     this.view = new AppView();
+    this.nv = new navBar();
+    this.verifyView = new VerifyView();
+    this.loginForm = new LoginForm();
+    this.signUp = new SignUp();
+    this.nv2 = new navBar(navBarView2, navBarController2, navBarModel2);
 
     this.currentState = null;
 
@@ -33,10 +41,8 @@ class Application extends HTMLElement {
   }
 
   render() {
-    const nv = new navBar();
-    const nv2 = new navBar();
     const holdin = new Holdin();
-    this.view.headerSlot.appendChild(nv);
+    this.view.headerSlot.appendChild(this.nv);
     this.changeState(holdin);
   }
 
@@ -46,18 +52,23 @@ class Application extends HTMLElement {
     });
 
     window.addEventListener("trigger-verify", () => {
-      const verifyView = new VerifyView();
-      this.changeState(verifyView);
+      this.changeState(this.verifyView);
     });
 
     window.addEventListener("trigger-login-instance", () => {
-      const loginForm = new LoginForm();
-      this.changeState(loginForm);
+      this.changeState(this.loginForm);
     });
 
     window.addEventListener("trigger-signup-instance", () => {
-      const signUp = new SignUp();
-      this.changeState(signUp);
+      this.changeState(this.signUp);
+    });
+    window.addEventListener("trigger-loggedIn-instance", () => {
+      this.view.headerSlot.removeChild(this.nv);
+      this.view.headerSlot.appendChild(this.nv2);
+    });
+    window.addEventListener("trigger-navBar0-instance", () => {
+      this.view.headerSlot.removeChild(this.nv2);
+      this.view.headerSlot.appendChild(this.nv);
     });
   }
 }

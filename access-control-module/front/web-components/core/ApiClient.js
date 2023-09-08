@@ -3,7 +3,7 @@ class ApiClient {
     this.baseUrl = baseUrl;
   }
 
-  async makeApiCall(endpoint, method, data, token = null, id = null) {
+  async makeApiCall(endpoint, method, data, token, id) {
     const fullUrl = `${this.baseUrl}${endpoint}`;
     const headers = {
       "Content-Type": "application/json",
@@ -11,8 +11,8 @@ class ApiClient {
 
     // Agregar headers de token si se proporciona token y Id
     if (token !== null && id !== null) {
-      headers["Custom-Token"] = token;
-      headers["Id"] = id;
+      headers["custom-token"] = token;
+      headers["id"] = id;
     }
 
     const request = {

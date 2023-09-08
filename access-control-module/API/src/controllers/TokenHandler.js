@@ -1,15 +1,11 @@
-const crypto = require("crypto");
+const { v4: uuidv4 } = require("uuid");
 const { cacheHandler } = require("../cache/cacheHandler.js");
 
 class TokenHandler {
   constructor() {}
 
-  create(data) {
-    const hash = crypto.createHash("sha256");
-
-    hash.update(data);
-
-    const token = hash.digest("hex");
+  create() {
+    const token = uuidv4();
 
     return token;
   }

@@ -12,10 +12,11 @@ app.get("/", (req, res) => {
   res.end("Hello!");
 });
 
-// Ruta sign up
-app.post("/UserHandler/login", requestHandler.login);
+app.post("/sessionHandler/login", requestHandler.login);
 
-app.post("/UserHandler/signup", requestHandler.signup);
+app.post("/sessionHandler/signup", requestHandler.signup);
+
+app.get("/sessionHandler/logout", requestHandler.logout);
 
 // Iniciar el servidor en el puerto 3000
 app.start(port);

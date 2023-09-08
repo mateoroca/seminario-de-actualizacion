@@ -1,5 +1,3 @@
-const { TokenHandler } = require("./TokenHandler.js");
-const { cacheHandler } = require("../cache/cacheHandler.js");
 const { UserHandler } = require("./UserHandler.js");
 const { User } = require("../models/User.js");
 const { UserData } = require("../models/UserData.js");
@@ -7,6 +5,7 @@ const { DataBaseHandler } = require("./DataBaseHandler.js");
 const { GroupHandler } = require("./GroupHandler.js");
 const { Sanitizer } = require("../sanitizer/sanitizer.js");
 const { SessionHandler } = require("./SessionHandler.js");
+const { cacheHandler } = require("../cache/cacheHandler.js");
 
 class RequestHandler {
   constructor() {}
@@ -41,20 +40,16 @@ class RequestHandler {
         const dataBaseHandler = new DataBaseHandler();
         const groupH = new GroupHandler(dataBaseHandler);
         const userHandler = new UserHandler(dataBaseHandler, groupH);
-        const tokenHAndler = new TokenHandler();
 
         userHandler.create(user);
 
         userHandler
           .GetLastUserID()
           .then((lastId) => {
-            const idToString = lastId.toString();
-            const token = tokenHAndler.create(idToString);
-            cacheHandler.setCacheDatabyKey(idToString, token);
-
-            console.log(cacheHandler.getCacheData());
             userHandler.createUserData(lastId, userData);
-            res.end(JSON.stringify({ userId: lastId, Token: token }));
+            res.end(
+              JSON.stringify({ state: true, message: "user registered" })
+            );
           })
           .catch((error) => {
             console.error("Error:", error);
@@ -100,13 +95,16 @@ class RequestHandler {
               if (response.success) {
                 res.end(
                   JSON.stringify({
+                    status: true,
                     userId: userId,
                     Token: response.token,
                     message: "User logged in",
                   })
                 );
               } else {
-                res.end(JSON.stringify({ message: response.error }));
+                res.end(
+                  JSON.stringify({ status: false, message: response.error })
+                );
               }
             } catch (error) {
               console.error("Error al iniciar sesión:", error);
@@ -121,15 +119,31 @@ class RequestHandler {
     });
   }
 
-  logout(username) {
-    // Lógica para cerrar sesión de un usuario
+  logout(req, res) {
+    const id = req.headers["id"];
+    if (id) {
+      const sessionHandler = new SessionHandler();
+      sessionHandler.endSession(id);
+      console.log(cacheHandler.getCacheData());
+      res.end(JSON.stringify({ message: "session close" }));
+    } else {
+      res.end(JSON.stringify({ message: "error user id no valido" }));
+    }
   }
 
-  checkPermissions(username, resource) {
-    // Lógica para comprobar los permisos de un usuario para acceder a un recurso
+  getUserData() {
+    const customToken = req.headers["custom-token"];
+    const id = req.headers["id"];
+    console.log(customToken, id);
+    if (customToken && id) {
+      res.end(JSON.stringify({ message: "Solicitud procesada correctamente" }));
+    } else {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({ message: "Faltan encabezados Custom-Token e Id" })
+      );
+    }
   }
-
-  // Otros métodos relacionados con la autenticación y la autorización
 }
 
 module.exports = { RequestHandler };

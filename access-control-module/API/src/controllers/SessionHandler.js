@@ -1,6 +1,7 @@
-const { TokenHandler } = require("./TokenHandler");
+const { TokenHandler } = require("./TokenHandler.js");
 const { cacheHandler } = require("../cache/cacheHandler.js");
 const { Authenticator } = require("./Authenticator.js");
+const { v4: uuidv4 } = require("uuid");
 
 class SessionHandler {
   constructor() {}
@@ -16,11 +17,14 @@ class SessionHandler {
 
       if (isAuthenticated) {
         const tokenHandler = new TokenHandler();
-        const token = tokenHandler.create(toString(userId));
+        const token = tokenHandler.create();
+        // const sessionId = uuidv4(); A investigar
         cacheHandler.setCacheDataByKey(userId, token);
+
+        console.log(cacheHandler.getCacheData());
         return { success: true, token };
       } else {
-        return { success: false, error: "Wrong password error" };
+        return { success: false, error: "wrong username or password error" };
       }
     } catch (error) {
       console.error(error);
@@ -28,7 +32,10 @@ class SessionHandler {
     }
   }
 
-  endSession(sessionId) {}
+  endSession(userId) {
+    const tokenHandler = new TokenHandler();
+    tokenHandler.deleteToken(userId);
+  }
   validateSession(sessionId) {}
   refreshSession(sessionId) {}
   destroyInactiveSessions() {}

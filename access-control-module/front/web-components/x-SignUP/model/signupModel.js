@@ -9,7 +9,7 @@ class SignUpModel {
   async signUp(data) {
     try {
       let response = await this.apiClient.makeApiCall(
-        "UserHandler/signup",
+        "sessionHandler/signup",
         "POST",
         data
       );
@@ -19,6 +19,7 @@ class SignUpModel {
 
       this.localStorageH.setOnlocalStorage("userId:", id);
       this.localStorageH.setOnlocalStorage("Token:", token);
+      return response.message;
     } catch (error) {
       console.log(error);
     }
