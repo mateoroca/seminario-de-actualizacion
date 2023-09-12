@@ -2,6 +2,7 @@ const { DataBaseHandler } = require("./DataBaseHandler.js");
 const { GroupHandler } = require("./GroupHandler.js");
 const { UserHandler } = require("./UserHandler.js");
 const { Encryptor } = require("./Encryptor.js");
+const { cacheHandler } = require("../cache/cacheHandler.js");
 
 class Authenticator {
   contructor() {}
@@ -15,6 +16,22 @@ class Authenticator {
     const encryptedPassw = encryptor.encrypt(password);
 
     if (encryptedPassw == userInfo.password) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  validateUserIdAndToken(claveBuscada, valorBuscado) {
+    let found;
+    for (let [key, value] of cacheHandler.tokensCache.entries()) {
+      if (key == claveBuscada && value == valorBuscado) {
+        found = true;
+        break;
+      }
+    }
+
+    if (found) {
       return true;
     } else {
       return false;

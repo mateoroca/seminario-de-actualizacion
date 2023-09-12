@@ -18,5 +18,9 @@ app.post("/sessionHandler/signup", requestHandler.signup);
 
 app.get("/sessionHandler/logout", requestHandler.logout);
 
+app.get("/groupHandler/getgroupsdata", requestHandler.getGroupsData);
+
+app.get("/userHandler/getuserdata", requestHandler.getUserData);
+
 // Iniciar el servidor en el puerto 3000
 app.start(port);

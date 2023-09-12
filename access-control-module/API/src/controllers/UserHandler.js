@@ -106,7 +106,7 @@ class UserHandler {
       );
     });
   }
-  showAll() {
+  async showAll() {
     return new Promise((resolve, reject) => {
       this.DBHandler.DB.query("CALL GetUsers()", (error, results) => {
         if (error) {
@@ -116,7 +116,13 @@ class UserHandler {
         }
 
         const users = results[0];
-        resolve(users);
+
+        const cleanedUsers = users.map(({ id, user_name }) => ({
+          id,
+          user_name,
+        }));
+
+        resolve(cleanedUsers);
       });
     });
   }

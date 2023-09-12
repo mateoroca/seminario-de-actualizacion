@@ -64,6 +64,35 @@ class AccessHandler {
       );
     });
   }
+  GetAccessIDByPath(pathName) {
+    return new Promise((resolve, reject) => {
+      this.DBHandler.DB.query(
+        "CALL GetAccessIDByPath(?, @accessId)",
+        [pathName],
+        (error) => {
+          if (error) {
+            console.error("Error:", error);
+            reject(error);
+            return;
+          }
+
+          this.DBHandler.DB.query(
+            "SELECT @accessId AS accessId",
+            (error, results) => {
+              if (error) {
+                console.error("Error:", error);
+                reject(error);
+                return;
+              }
+
+              const accessId = results[0].accessId;
+              resolve(accessId);
+            }
+          );
+        }
+      );
+    });
+  }
 }
 
 module.exports = {

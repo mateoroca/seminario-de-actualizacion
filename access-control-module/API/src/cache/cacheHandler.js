@@ -8,15 +8,19 @@ class CacheHandler {
   }
 
   getCacheDataByKey(key) {
-    if (key) {
+    if (this.tokensCache.has(key)) {
       return this.tokensCache.get(key);
     } else {
-      console.log(`key : ${key} not found`);
+      return `key : ${key} not found`;
     }
   }
 
   getCacheData() {
-    return this.tokensCache;
+    if (this.tokensCache) {
+      return this.tokensCache;
+    } else {
+      return "empty cache data";
+    }
   }
 
   deleteDataByKey(key) {

@@ -25,7 +25,13 @@ class GroupHandler {
         }
 
         const groups = results[0];
-        resolve(groups);
+
+        const cleanedGroups = groups.map((group) => ({
+          id: group.id,
+          name: group.name.trim(),
+        }));
+
+        resolve(cleanedGroups);
       });
     });
   }

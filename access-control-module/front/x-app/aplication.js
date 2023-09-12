@@ -7,16 +7,22 @@ import { AppView } from "../x-app/view/appView.js";
 import { navBarView2 } from "../web-components/x-nav-bar/views/nabBar-view2.js";
 import { navBarModel2 } from "../web-components/x-nav-bar/model/navBarModel2.js";
 import { navBarController2 } from "../web-components/x-nav-bar/controller/nabBarController2.js";
+import { Alert } from "../web-components/x-alert/x-alert.js";
+import { AccessControlPanel } from "../web-components/x-AccessControlPanel/AccessControlPanel.js";
 
 class Application extends HTMLElement {
   constructor() {
     super();
     this.view = new AppView();
+    ////////////////////////////////
+    this.holdin = new Holdin();
     this.nv = new navBar();
     this.verifyView = new VerifyView();
     this.loginForm = new LoginForm();
     this.signUp = new SignUp();
     this.nv2 = new navBar(navBarView2, navBarController2, navBarModel2);
+    this.alert = new Alert();
+    this.accessControlPanel = new AccessControlPanel();
 
     this.currentState = null;
 
@@ -41,9 +47,8 @@ class Application extends HTMLElement {
   }
 
   render() {
-    const holdin = new Holdin();
     this.view.headerSlot.appendChild(this.nv);
-    this.changeState(holdin);
+    this.changeState(this.accessControlPanel);
   }
 
   setupEventListeners() {
@@ -66,9 +71,17 @@ class Application extends HTMLElement {
       this.view.headerSlot.removeChild(this.nv);
       this.view.headerSlot.appendChild(this.nv2);
     });
-    window.addEventListener("trigger-navBar0-instance", () => {
+    window.addEventListener("trigger-logout-instance", () => {
       this.view.headerSlot.removeChild(this.nv2);
       this.view.headerSlot.appendChild(this.nv);
+      this.changeState(this.holdin);
+    });
+    window.addEventListener("trigger-alert-instance", (e) => {
+      this.alert.controller.showMessage(e.detail);
+      this.view.footerSlot.appendChild(this.alert);
+    });
+    window.addEventListener("trigger-delete-alert-instance", (e) => {
+      this.view.footerSlot.removeChild(this.alert);
     });
   }
 }

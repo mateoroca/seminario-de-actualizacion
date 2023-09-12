@@ -28,10 +28,15 @@ class LoginFormController {
     };
     let res = await this.model.login(DATA);
     if (res.status) {
+      window.dispatchEvent(
+        new CustomEvent("trigger-alert-instance", { detail: res.message })
+      );
+
       window.dispatchEvent(new Event("trigger-loggedIn-instance"));
-      console.log(res.message);
     } else {
-      console.log(res.message);
+      window.dispatchEvent(
+        new CustomEvent("trigger-alert-instance", { detail: res.message })
+      );
     }
   }
   onbuttomForgotPasswordClick() {

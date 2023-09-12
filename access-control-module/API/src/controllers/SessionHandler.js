@@ -21,7 +21,6 @@ class SessionHandler {
         // const sessionId = uuidv4(); A investigar
         cacheHandler.setCacheDataByKey(userId, token);
 
-        console.log(cacheHandler.getCacheData());
         return { success: true, token };
       } else {
         return { success: false, error: "wrong username or password error" };
