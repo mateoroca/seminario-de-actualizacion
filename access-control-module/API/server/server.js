@@ -43,14 +43,15 @@ class Server {
     }
 
     const handler = this.routes[method][pathname] || this.routes[method]["*"];
-    console.log(pathname);
+
     if (handler) {
       if (
         pathname == "/sessionHandler/login" ||
         pathname == "/sessionHandler/signup" ||
-        pathname == "/sessionHandler/logout" ||
-        pathname == "/groupHandler/getgroupsdata" ||
-        pathname == "/userHandler/getuserdata"
+        pathname == "/sessionHandler/logout"
+        /* pathname == "/groupHandler/getgroupsdata" ||
+        pathname == "/userHandler/getuserdata" ||
+        pathname == "/groupHandler/addusertogroup" */
       ) {
         res.writeHead(200, this.headers);
         handler(req, res);
@@ -87,8 +88,6 @@ class Server {
       res.writeHead(404, this.headers);
       handler(req, res);
       console.log(`Solicitud a ${method} ${pathname} no encontrada`);
-      res.statusCode = 404;
-      res.end("endpoint Not Found");
     }
   }
 

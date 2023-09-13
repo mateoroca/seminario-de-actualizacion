@@ -60,10 +60,10 @@ class GroupHandler {
         (error, results) => {
           if (error) {
             console.error("Error:", error);
-            reject(error);
+            reject(false);
             return;
           }
-          console.log("success to execute SP");
+          console.log("success to add user to group");
           resolve(true);
         }
       );
@@ -81,6 +81,35 @@ class GroupHandler {
       console.error("Error:", error);
       throw error;
     }
+  }
+  async GetGroupIdByName(groupName) {
+    return new Promise((resolve, reject) => {
+      this.DBHandler.DB.query(
+        "CALL GetGroupIdByName(?,@GroupId)",
+        [groupName],
+        (error) => {
+          if (error) {
+            console.error("Error:", error);
+            reject(error);
+            return;
+          }
+
+          this.DBHandler.DB.query(
+            "SELECT @GroupId AS GroupId",
+            (error, results) => {
+              if (error) {
+                console.error("Error:", error);
+                reject(error);
+                return;
+              }
+
+              const groupId = results[0].GroupId;
+              resolve(groupId);
+            }
+          );
+        }
+      );
+    });
   }
 }
 

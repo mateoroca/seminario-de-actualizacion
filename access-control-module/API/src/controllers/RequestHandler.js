@@ -148,8 +148,6 @@ class RequestHandler {
     const customToken = req.headers["custom-token"];
     const id = req.headers["id"];
 
-    const authorizer = new Authorizer();
-
     if (customToken && id) {
       res.end(JSON.stringify({ message: "Solicitud procesada correctamente" }));
     } else {
@@ -177,8 +175,47 @@ class RequestHandler {
       new GroupHandler(new DataBaseHandler())
     );
     const userData = await userHandler.showAll();
-    console.log(userData);
+
     res.end(JSON.stringify({ Data: userData }));
+  }
+
+  async addUserToGroup(req, res) {
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+    req.on("end", async () => {
+      const requestData = JSON.parse(body);
+
+      const sanitizedData = new Sanitizer();
+      sanitizedData.trimData(requestData);
+
+      const isStryng = sanitizedData.validateTypeString(requestData);
+      const isEmpty = sanitizedData.isDataEmpty(requestData);
+
+      if (!isEmpty && isStryng) {
+        const userName = requestData.userName;
+        const userGroup = requestData.groupName;
+
+        const userHandler = new UserHandler(
+          new DataBaseHandler(),
+          new GroupHandler(new DataBaseHandler())
+        );
+        const groupHandler = new GroupHandler(new DataBaseHandler());
+        const groupId = await groupHandler.GetGroupIdByName(userGroup);
+        const UserId = await userHandler.getIdByUserName(userName);
+        let state = await groupHandler.addUserToGroup(UserId, groupId);
+        res.end(
+          JSON.stringify({
+            status: state,
+            message: `success to add ${userName} to group : ${userGroup}`,
+          })
+        );
+      } else {
+        res.end(JSON.stringify({ state: false, message: "error empty data" }));
+      }
+    });
   }
 }
 

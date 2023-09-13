@@ -48,7 +48,7 @@ class Application extends HTMLElement {
 
   render() {
     this.view.headerSlot.appendChild(this.nv);
-    this.changeState(this.accessControlPanel);
+    this.changeState(this.holdin);
   }
 
   setupEventListeners() {
@@ -70,6 +70,7 @@ class Application extends HTMLElement {
     window.addEventListener("trigger-loggedIn-instance", () => {
       this.view.headerSlot.removeChild(this.nv);
       this.view.headerSlot.appendChild(this.nv2);
+      this.changeState(this.accessControlPanel);
     });
     window.addEventListener("trigger-logout-instance", () => {
       this.view.headerSlot.removeChild(this.nv2);

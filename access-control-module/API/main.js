@@ -22,5 +22,7 @@ app.get("/groupHandler/getgroupsdata", requestHandler.getGroupsData);
 
 app.get("/userHandler/getuserdata", requestHandler.getUserData);
 
+app.post("/groupHandler/addusertogroup", requestHandler.addUserToGroup);
+
 // Iniciar el servidor en el puerto 3000
 app.start(port);

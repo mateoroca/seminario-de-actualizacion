@@ -19,6 +19,7 @@ class navBarModel2 {
           token,
           userId
         );
+        this.localStorageH.cleanLocalStorage();
         return response;
       }
     } catch (error) {

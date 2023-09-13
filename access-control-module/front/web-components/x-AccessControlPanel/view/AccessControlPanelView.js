@@ -26,18 +26,18 @@ class AccessControlPanelView extends HTMLElement {
     this.fieldName = document.createElement("div");
     this.fieldName.classList.add("field");
 
-    this.groupAccess = document.createElement("select");
-    this.groupAccess.setAttribute("autocomplete", "on");
-    this.groupAccess.placeholder = "role";
-    this.groupAccess.classList.add("input-field");
-    this.fieldName.appendChild(this.groupAccess);
+    this.groupName = document.createElement("select");
+    this.groupName.setAttribute("autocomplete", "on");
+    this.groupName.placeholder = "role";
+    this.groupName.classList.add("input-field");
+    this.fieldName.appendChild(this.groupName);
 
     this.btnDIV = document.createElement("div");
     this.btnDIV.classList.add("containerBtnSignUp");
 
     this.buttonSubmit = document.createElement("button");
     this.buttonSubmit.classList.add("btnSignUp");
-    this.buttonSubmit.textContent = "Assign role";
+    this.buttonSubmit.textContent = "Assign Group";
     this.btnDIV.appendChild(this.buttonSubmit);
 
     this.form.appendChild(this.heading);
@@ -57,6 +57,18 @@ class AccessControlPanelView extends HTMLElement {
       option.text = optionText;
       selectElement.appendChild(option);
     });
+  }
+
+  getSelectValues() {
+    try {
+      const Data = {
+        userName: this.UserName.value,
+        groupName: this.groupName.value,
+      };
+      return Data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 
