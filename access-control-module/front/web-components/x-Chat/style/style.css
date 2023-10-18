@@ -1,0 +1,126 @@
+.card {
+  margin-top: 2rem;
+  width: 420px;
+  background-color: #171717a8;
+  border: 1px solid rgb(0, 255, 200);
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header {
+  background-color: #17171795;
+  color: rgb(0, 255, 200);
+  padding: 10px;
+  font-size: 18px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.chat-window {
+  background-color: #171717;
+  height: 300px;
+  overflow-y: scroll;
+
+}
+
+.chat-window::-webkit-scrollbar {
+  background-color: rgba(0, 255, 200, 0.724);
+  ;
+}
+
+.message-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chat-input {
+  background-color: #171717;
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+
+}
+
+.message-input {
+
+  background-color: #171717;
+  border: none;
+  outline: none;
+  width: 100%;
+  color: rgb(0, 255, 200);
+}
+
+.send-button {
+  padding: 0.5em;
+  padding-left: 1.1em;
+  padding-right: 1.1em;
+  border-radius: 5px;
+  margin-right: 0.5em;
+  border: none;
+  outline: none;
+  transition: .4s ease-in-out;
+  background-image: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
+  color: rgb(0, 0, 0);
+}
+
+.send-button:hover {
+  background-image: linear-gradient(163deg, #00642f 0%, #13034b 100%);
+  color: rgb(0, 255, 200);
+}
+
+.message-item {
+  display: flex;
+  margin: 5px;
+  border-radius: 5px;
+  padding: 10px;
+  color: rgb(0, 255, 200);
+  font-size: small;
+}
+
+.timestamp {
+  color: rgba(0, 255, 200, 0.511);
+  font-size: xx-small;
+  margin: 5px;
+}
+
+.check {
+  margin: 5px;
+}
+
+
+.message-received {
+  max-width: 60%;
+  word-wrap: break-word;
+  margin: 5px;
+  background-color: #2c2c2c;
+}
+
+
+.message-sent {
+  background-color: rgba(0, 255, 200, 0.331);
+  max-width: 60%;
+  word-wrap: break-word;
+  margin: 5px;
+  /* Espacio entre los mensajes */
+}
+
+.message-sent-container {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  /* Permitir que los mensajes se envíen a la siguiente línea */
+}
+
+.message-received-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+
+}
+
+.message-content {
+  max-width: 10rem;
+}

@@ -1,4 +1,4 @@
-const { Encryptor } = require("./Encryptor.js");
+const { Encryptor } = require("../Encryptor/Encryptor.js");
 
 class UserHandler {
   constructor(DataBaseHandler, innerGroupHandler) {
@@ -106,7 +106,7 @@ class UserHandler {
       );
     });
   }
-  async showAll() {
+  async getUsers() {
     return new Promise((resolve, reject) => {
       this.DBHandler.DB.query("CALL GetUsers()", (error, results) => {
         if (error) {

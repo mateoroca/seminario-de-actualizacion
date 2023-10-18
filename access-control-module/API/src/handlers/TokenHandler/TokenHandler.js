@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require("uuid");
-const { cacheHandler } = require("../cache/cacheHandler.js");
+const { cacheHandler } = require("../../cache/cacheHandler.js");
 
 class TokenHandler {
   constructor() {}
@@ -10,8 +10,8 @@ class TokenHandler {
     return token;
   }
 
-  deleteToken(key) {
-    cacheHandler.deleteDataByKey(key);
+  deleteToken(id) {
+    cacheHandler.deleteTokenById(id);
   }
 }
 

@@ -8,8 +8,6 @@ class Authorizer {
   async authorize(userId, accessId) {
     try {
       if (await this.UserH.checkIfUsersExist()) {
-        console.log(`id del usuario ${userId}`);
-
         const results = await this.GroupH.getGroupIDByUserID(userId);
 
         if (await this.GroupH.checkIfGroupsExist()) {
@@ -17,25 +15,15 @@ class Authorizer {
             ({ group_has_userID }) => group_has_userID
           );
 
-          console.log(
-            `los grupos a los que pertenese el user son : ${groupIDS}`
-          );
-
           const groupAccess = await this.AccessH.getGroupAccessByAccessID(
             accessId
-          );
-
-          console.log(
-            `los grupos que tienen tal accesso son el :${groupAccess}`
           );
 
           const hasRelation = this.checkRelation(groupIDS, groupAccess);
 
           if (hasRelation) {
-            console.log("the user has the required access");
             return true;
           } else {
-            console.log("the user doesn't have the required access");
             return false;
           }
         } else {

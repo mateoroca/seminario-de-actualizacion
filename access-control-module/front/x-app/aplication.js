@@ -9,6 +9,7 @@ import { navBarModel2 } from "../web-components/x-nav-bar/model/navBarModel2.js"
 import { navBarController2 } from "../web-components/x-nav-bar/controller/nabBarController2.js";
 import { Alert } from "../web-components/x-alert/x-alert.js";
 import { AccessControlPanel } from "../web-components/x-AccessControlPanel/AccessControlPanel.js";
+import { Chat } from "../web-components/x-Chat/x-Chat.js";
 
 class Application extends HTMLElement {
   constructor() {
@@ -23,6 +24,7 @@ class Application extends HTMLElement {
     this.nv2 = new navBar(navBarView2, navBarController2, navBarModel2);
     this.alert = new Alert();
     this.accessControlPanel = new AccessControlPanel();
+    this.Chat = new Chat();
 
     this.currentState = null;
 
@@ -48,7 +50,7 @@ class Application extends HTMLElement {
 
   render() {
     this.view.headerSlot.appendChild(this.nv);
-    this.changeState(this.holdin);
+    this.changeState(this.Chat);
   }
 
   setupEventListeners() {

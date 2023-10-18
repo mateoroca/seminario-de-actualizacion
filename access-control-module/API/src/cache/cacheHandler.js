@@ -1,13 +1,16 @@
 class CacheHandler {
   constructor() {
     this.tokensCache = new Map();
+    this.chatsProposal = [];
+    this.chatsMessages = new Map();
+    this.activeUsers = [];
   }
 
-  setCacheDataByKey(key, value) {
+  storeUserIdAndToken(key, value) {
     this.tokensCache.set(key, value);
   }
 
-  getCacheDataByKey(key) {
+  getTokensById(key) {
     if (this.tokensCache.has(key)) {
       return this.tokensCache.get(key);
     } else {
@@ -15,7 +18,7 @@ class CacheHandler {
     }
   }
 
-  getCacheData() {
+  getTokens() {
     if (this.tokensCache) {
       return this.tokensCache;
     } else {
@@ -23,12 +26,28 @@ class CacheHandler {
     }
   }
 
-  deleteDataByKey(key) {
-    this.tokensCache.delete(key);
+  deleteTokenById(id) {
+    this.tokensCache.delete(id);
   }
 
   clearAllCache() {
     this.tokensCache.clear();
+  }
+  setAsActive(userId) {
+    this.activeUsers.push(userId);
+  }
+  setAsInactive(userId) {
+    const userIndex = this.activeUsers.findIndex((userID) => userID == userId);
+
+    if (userIndex !== -1) {
+      this.activeUsers.splice(userIndex, 1);
+    } else {
+      console.log("not users founded");
+    }
+  }
+
+  getActiveUsers() {
+    return this.activeUsers;
   }
 }
 

@@ -1,11 +1,19 @@
 const http = require("http");
 const url = require("url");
-const { Authorizer } = require("../src/controllers/Authorizer.js");
-const { Authenticator } = require("../src/controllers/Authenticator.js");
-const { AccessHandler } = require("../src/controllers/AccessHandler.js");
-const { DataBaseHandler } = require("../src/controllers/DataBaseHandler.js");
-const { GroupHandler } = require("../src/controllers/GroupHandler.js");
-const { UserHandler } = require("../src/controllers/UserHandler.js");
+const { Authorizer } = require("../src/handlers/Authorizer/Authorizer.js");
+const {
+  Authenticator,
+} = require("../src/handlers/Authenticator/Authenticator.js");
+const {
+  AccessHandler,
+} = require("../src/handlers/AccessHandler/AccessHandler.js");
+const {
+  DataBaseHandler,
+} = require("../src/handlers/DatabaseHandler/DataBaseHandler.js");
+const {
+  GroupHandler,
+} = require("../src/handlers/GroupHandler/GroupHandler.js");
+const { UserHandler } = require("../src/handlers/UserHandler/UserHandler.js");
 
 class Server {
   constructor() {
@@ -48,10 +56,9 @@ class Server {
       if (
         pathname == "/sessionHandler/login" ||
         pathname == "/sessionHandler/signup" ||
-        pathname == "/sessionHandler/logout"
-        /* pathname == "/groupHandler/getgroupsdata" ||
-        pathname == "/userHandler/getuserdata" ||
-        pathname == "/groupHandler/addusertogroup" */
+        pathname == "/sessionHandler/logout" ||
+        pathname == "/chatmessagehandler/newchatmessage" ||
+        pathname == "/chatmessagehandler/getchatmessages"
       ) {
         res.writeHead(200, this.headers);
         handler(req, res);

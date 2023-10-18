@@ -1,8 +1,8 @@
-const { DataBaseHandler } = require("./DataBaseHandler.js");
-const { GroupHandler } = require("./GroupHandler.js");
-const { UserHandler } = require("./UserHandler.js");
-const { Encryptor } = require("./Encryptor.js");
-const { cacheHandler } = require("../cache/cacheHandler.js");
+const { DataBaseHandler } = require("../DatabaseHandler/DataBaseHandler.js");
+const { GroupHandler } = require("../GroupHandler/GroupHandler.js");
+const { UserHandler } = require("../UserHandler/UserHandler.js");
+const { Encryptor } = require("../Encryptor/Encryptor.js");
+const { cacheHandler } = require("../../cache/cacheHandler.js");
 
 class Authenticator {
   contructor() {}

@@ -10,8 +10,7 @@ class AccessControlPanelModel {
     try {
       const userId = this.localStorageH.getOfLocalStorage("userId");
       const token = this.localStorageH.getOfLocalStorage("Token");
-      console.log(userId);
-      console.log(token);
+
       let response = await this.apiClient.makeApiCall(
         "groupHandler/getgroupsdata",
         "GET",
@@ -29,10 +28,9 @@ class AccessControlPanelModel {
     try {
       const userId = this.localStorageH.getOfLocalStorage("userId");
       const token = this.localStorageH.getOfLocalStorage("Token");
-      console.log(userId);
-      console.log(token);
+
       let response = await this.apiClient.makeApiCall(
-        "userHandler/getuserdata",
+        "userHandler/getusers",
         "GET",
         null,
         token,
@@ -48,8 +46,7 @@ class AccessControlPanelModel {
     try {
       const userId = this.localStorageH.getOfLocalStorage("userId");
       const token = this.localStorageH.getOfLocalStorage("Token");
-      console.log(userId);
-      console.log(token);
+
       if (userId && token) {
         let response = await this.apiClient.makeApiCall(
           "groupHandler/addusertogroup",

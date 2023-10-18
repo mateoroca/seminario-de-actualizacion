@@ -1,7 +1,6 @@
-const { TokenHandler } = require("./TokenHandler.js");
-const { cacheHandler } = require("../cache/cacheHandler.js");
-const { Authenticator } = require("./Authenticator.js");
-const { v4: uuidv4 } = require("uuid");
+const { TokenHandler } = require("../TokenHandler/TokenHandler.js");
+const { cacheHandler } = require("../../cache/cacheHandler.js");
+const { Authenticator } = require("../Authenticator/Authenticator.js");
 
 class SessionHandler {
   constructor() {}
@@ -18,8 +17,9 @@ class SessionHandler {
       if (isAuthenticated) {
         const tokenHandler = new TokenHandler();
         const token = tokenHandler.create();
-        // const sessionId = uuidv4(); A investigar
-        cacheHandler.setCacheDataByKey(userId, token);
+
+        cacheHandler.storeUserIdAndToken(userId, token);
+        cacheHandler.setAsActive(userId);
 
         return { success: true, token };
       } else {
@@ -34,6 +34,7 @@ class SessionHandler {
   endSession(userId) {
     const tokenHandler = new TokenHandler();
     tokenHandler.deleteToken(userId);
+    cacheHandler.setAsInactive(userId);
   }
   validateSession(sessionId) {}
   refreshSession(sessionId) {}
