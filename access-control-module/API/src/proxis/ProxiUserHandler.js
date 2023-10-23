@@ -14,11 +14,19 @@ class ProxiUserHandler {
     );
     try {
       const userData = await userHandler.getUsers();
-      res.end(JSON.stringify({ Data: userData }));
+      res.end(
+        JSON.stringify({
+          status: true,
+          message: "success to get users",
+          data: userData,
+        })
+      );
     } catch (error) {
       console.error("Error en getUsers:", error);
       res.writeHead(500, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ error: "Error interno del servidor" }));
+      res.end(
+        JSON.stringify({ status: false, message: "Error interno del servidor" })
+      );
     }
   }
 }

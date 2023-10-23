@@ -150,6 +150,25 @@ class ProxiSessionHandler {
       );
     }
   }
+
+  getActiveUsers(req, res) {
+    try {
+      const sessionHandler = new SessionHandler();
+      const activeUsersIds = sessionHandler.getActiveUsers();
+      res.end(
+        JSON.stringify({
+          status: true,
+          message: "success to get Active Users",
+          data: activeUsersIds,
+        })
+      );
+    } catch (error) {
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({ status: false, message: "error to get Active Users" })
+      );
+    }
+  }
 }
 
 module.exports = { ProxiSessionHandler };

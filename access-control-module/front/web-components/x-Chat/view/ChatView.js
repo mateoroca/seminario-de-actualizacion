@@ -94,7 +94,7 @@ class ChatView extends HTMLElement {
 
     this.messageList.appendChild(messageContainer);
   }
-  setTheReceivedSymbol(li) {
+  setReceivedSymbol(li) {
     const sended = document.createElement("span");
     sended.textContent = "✓";
     sended.classList.add("check");
@@ -110,6 +110,9 @@ class ChatView extends HTMLElement {
   }
   getMessageInput() {
     return this.messageInput.value;
+  }
+  cleanInput() {
+    this.messageInput.value = null;
   }
 }
 

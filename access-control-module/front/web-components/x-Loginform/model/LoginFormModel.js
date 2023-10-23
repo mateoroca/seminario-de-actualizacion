@@ -1,5 +1,5 @@
-import { LocalStorageHandler } from "../../core/LocalStorageHandler.js";
-import { ApiClient } from "../../core/ApiClient.js";
+import { LocalStorageHandler } from "../../common/LocalStorageHandler.js";
+import { ApiClient } from "../../common/ApiClient.js";
 
 class LoginFormModel {
   constructor() {

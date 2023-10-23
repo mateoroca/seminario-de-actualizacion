@@ -1,6 +1,7 @@
 class CacheHandler {
   constructor() {
     this.tokensCache = new Map();
+    this.chats = [];
     this.chatsProposal = [];
     this.chatsMessages = new Map();
     this.activeUsers = [];
@@ -33,6 +34,9 @@ class CacheHandler {
   clearAllCache() {
     this.tokensCache.clear();
   }
+  getChatsProposals() {
+    return this.chatsProposal;
+  }
   setAsActive(userId) {
     this.activeUsers.push(userId);
   }
@@ -48,6 +52,9 @@ class CacheHandler {
 
   getActiveUsers() {
     return this.activeUsers;
+  }
+  getChats() {
+    return this.chats;
   }
 }
 

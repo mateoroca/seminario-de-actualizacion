@@ -7,6 +7,19 @@ const {
   ChatMessageHandler,
 } = require("../handlers/ChatApi/ChatMessageHandler/ChatMessageHandler.js");
 
+const {
+  ChatHandler,
+} = require("../handlers/ChatApi/ChatHandler/chatHandler.js");
+
+const {
+  DataBaseHandler,
+} = require("../handlers/DatabaseHandler/DataBaseHandler.js");
+const { GroupHandler } = require("../handlers/GroupHandler/GroupHandler.js");
+const { UserHandler } = require("../handlers/UserHandler/UserHandler.js");
+const { cacheHandler } = require("../cache/cacheHandler.js");
+
+//////////////////////////////////////////////////////////////////////////////////
+
 class ProxiChatApi {
   constructor() {}
 
@@ -73,6 +86,117 @@ class ProxiChatApi {
         let messages = await chatMessageHandler.getChatMessages(chatId);
 
         res.end(JSON.stringify({ status: true, arrayOfMessages: messages }));
+      } catch (error) {
+        console.error("Error en getUsers:", error);
+
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Internal Server Error" }));
+      }
+    });
+  }
+  async getChatProposal(req, res) {
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+
+    req.on("end", async () => {
+      const requestData = JSON.parse(body);
+
+      const userId = requestData;
+
+      try {
+        const chatProposalHandler = new ChatProposalHandler();
+        let response = await chatProposalHandler.getChatProposal(userId);
+
+        res.end(JSON.stringify(response));
+      } catch (error) {
+        console.error("Error en getUsers:", error);
+
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Internal Server Error" }));
+      }
+    });
+  }
+
+  createChats() {
+    try {
+      const userHandler = new UserHandler(
+        new DataBaseHandler(),
+        new GroupHandler(new DataBaseHandler())
+      );
+      const chatHandler = new ChatHandler(userHandler);
+      chatHandler.createChats();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  getChats(req, res) {
+    try {
+      const userHandler = new UserHandler(
+        new DataBaseHandler(),
+        new GroupHandler(new DataBaseHandler())
+      );
+      const chatHandler = new ChatHandler(userHandler);
+      const response = chatHandler.getChats();
+      res.end(JSON.stringify(response));
+    } catch (error) {
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Internal Server Error" }));
+    }
+  }
+
+  newChatProposal(req, res) {
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+
+    req.on("end", async () => {
+      const requestData = JSON.parse(body);
+
+      const userOriginId = requestData.userOriginId;
+      const userTargerId = requestData.userTargetID;
+
+      try {
+        const chatProposalHandler = new ChatProposalHandler();
+        let response = await chatProposalHandler.newChatProposal(
+          userOriginId,
+          userTargerId
+        );
+
+        res.end(JSON.stringify(response));
+      } catch (error) {
+        console.error("Error en getUsers:", error);
+
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Internal Server Error" }));
+      }
+    });
+  }
+
+  confirmChatProposal(req, res) {
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+
+    req.on("end", async () => {
+      const requestData = JSON.parse(body);
+
+      const chatProposalId = requestData.chatProposalId;
+
+      try {
+        const chatProposalHandler = new ChatProposalHandler();
+        let response = await chatProposalHandler.confirmChatProposal(
+          chatProposalId
+        );
+
+        res.end(JSON.stringify(response));
       } catch (error) {
         console.error("Error en getUsers:", error);
 

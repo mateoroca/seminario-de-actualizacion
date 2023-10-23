@@ -3,6 +3,9 @@ const { ProxiSessionHandler } = require("./src/proxis/ProxiSessionHandler.js");
 const { ProxiGroupHandler } = require("./src/proxis/ProxiGroupHandler.js");
 const { ProxiUserHandler } = require("./src/proxis/ProxiUserHandler.js");
 const { ProxiChatApi } = require("./src/proxis/ProxiChatApi.js");
+const {
+  ChatProposalHandler,
+} = require("./src/handlers/ChatApi/ChatProposalHandler/ChatProposalHandler");
 
 require("dotenv").config();
 //////////////////////////////////////////////////////////////////////////////////
@@ -21,6 +24,12 @@ app.get("/", (req, res) => {
   res.end("Hello!");
 });
 
+/*--------------- funciones al iniciar servidor --------*/
+
+/* proxiChatApi.createChats(); */
+
+/* --------------------------------------------------- */
+
 app.post("/sessionHandler/login", proxiSessionHandler.login);
 
 app.post("/sessionHandler/signup", proxiSessionHandler.signup);
@@ -37,5 +46,22 @@ app.post("/chatmessagehandler/newchatmessage", proxiChatApi.newChatMessage);
 
 app.post("/chatmessagehandler/getchatmessages", proxiChatApi.getChatMessages);
 
+app.get("/sessionhandler/getactiveusers", proxiSessionHandler.getActiveUsers);
+
+app.post("/chatproposalhandler/getchatproposal", proxiChatApi.getChatProposal);
+
+app.get("/chatHandler/getchats", proxiChatApi.getChats);
+
+app.post("/chatproposalhandler/newchatproposal", proxiChatApi.newChatProposal);
+
+app.post(
+  "/chatproposalhandler/confirmchatproposal",
+  proxiChatApi.confirmChatProposal
+);
+
 // Iniciar el servidor en el puerto 3000
 app.start(port);
+
+/* test */
+
+/*  */

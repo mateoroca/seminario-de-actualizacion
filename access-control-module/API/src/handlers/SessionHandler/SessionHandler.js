@@ -36,6 +36,9 @@ class SessionHandler {
     tokenHandler.deleteToken(userId);
     cacheHandler.setAsInactive(userId);
   }
+  getActiveUsers() {
+    return cacheHandler.getActiveUsers();
+  }
   validateSession(sessionId) {}
   refreshSession(sessionId) {}
   destroyInactiveSessions() {}

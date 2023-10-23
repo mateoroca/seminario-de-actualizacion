@@ -58,7 +58,13 @@ class Server {
         pathname == "/sessionHandler/signup" ||
         pathname == "/sessionHandler/logout" ||
         pathname == "/chatmessagehandler/newchatmessage" ||
-        pathname == "/chatmessagehandler/getchatmessages"
+        pathname == "/chatmessagehandler/getchatmessages" ||
+        pathname == "/userHandler/getusers" ||
+        pathname == "/sessionhandler/getactiveusers" ||
+        pathname == "/chatproposalhandler/getchatproposal" ||
+        pathname == "/chatHandler/getchats" ||
+        pathname == "/chatproposalhandler/newchatproposal" ||
+        pathname == "/chatproposalhandler/confirmchatproposal"
       ) {
         res.writeHead(200, this.headers);
         handler(req, res);
