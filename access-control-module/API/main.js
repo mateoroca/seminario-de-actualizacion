@@ -50,13 +50,23 @@ app.get("/sessionhandler/getactiveusers", proxiSessionHandler.getActiveUsers);
 
 app.post("/chatproposalhandler/getchatproposal", proxiChatApi.getChatProposal);
 
-app.get("/chatHandler/getchats", proxiChatApi.getChats);
+app.post("/chatHandler/getchats", proxiChatApi.getChats);
 
 app.post("/chatproposalhandler/newchatproposal", proxiChatApi.newChatProposal);
 
 app.post(
   "/chatproposalhandler/confirmchatproposal",
   proxiChatApi.confirmChatProposal
+);
+
+app.post(
+  "/chatproposalhandler/rejectchatproposal",
+  proxiChatApi.rejectChatProposal
+);
+
+app.post(
+  "/chatproposalhandler/deletechatproposal",
+  proxiChatApi.deleteChatProposal
 );
 
 // Iniciar el servidor en el puerto 3000

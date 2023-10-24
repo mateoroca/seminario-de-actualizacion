@@ -64,7 +64,9 @@ class Server {
         pathname == "/chatproposalhandler/getchatproposal" ||
         pathname == "/chatHandler/getchats" ||
         pathname == "/chatproposalhandler/newchatproposal" ||
-        pathname == "/chatproposalhandler/confirmchatproposal"
+        pathname == "/chatproposalhandler/confirmchatproposal" ||
+        pathname == "/chatproposalhandler/rejectchatproposal" ||
+        pathname == "/chatproposalhandler/deletechatproposal"
       ) {
         res.writeHead(200, this.headers);
         handler(req, res);

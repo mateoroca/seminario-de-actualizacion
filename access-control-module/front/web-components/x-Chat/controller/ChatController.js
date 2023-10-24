@@ -7,6 +7,9 @@ class ChatController {
     this.localStorageH = new LocalStorageHandler();
     this.messagesAttached = [];
     this.intervalId = null;
+    this.chatId;
+    this.userOriginId;
+    this.userTargetId;
   }
   enable() {
     this.view.addEventListener("send", () => {
@@ -31,16 +34,20 @@ class ChatController {
     const minutes = currentDate.getMinutes().toString().padStart(2, "0");
     const currentTime = `${hours}:${minutes}`;
 
+    console.log(this.chatId, this.userOriginId, this.userTargetId);
+
     const messageBody = this.view.getMessageInput();
 
     const message = {
-      chatId: 1,
+      chatId: this.chatId,
       userOriginId: userId,
-      userTargetId: userId,
+      userTargetId: this.userOriginId,
       MessageBody: messageBody,
       timesStampSended: currentTime,
       state: { sended: true, received: false },
     };
+
+    console.log(message);
 
     const liMessage = this.view.setNewMessage(messageBody, currentTime);
 
@@ -58,15 +65,15 @@ class ChatController {
     const userId = this.localStorageH.getOfLocalStorage("userId");
 
     const data = {
-      chatId: 1,
-      userTargetId: 1,
+      chatId: this.chatId,
     };
+
     let response = await this.model.getServerMessages(data);
 
-    const dataArray = response.arrayOfMessages;
+    const arrayOfMessages = response.arrayOfMessages;
 
     if (response.status == true) {
-      dataArray.forEach((item) => {
+      arrayOfMessages.forEach((item) => {
         const id = item.id;
         const userTargetId = item.userTargetId;
 
@@ -81,6 +88,13 @@ class ChatController {
         }
       });
     }
+  }
+  //////////////////////////////////////////////////////////
+
+  setValues(chatId, userOriginId, userTargetId) {
+    this.chatId = chatId;
+    this.userOriginId = userOriginId;
+    this.userTargetId = userTargetId;
   }
 }
 

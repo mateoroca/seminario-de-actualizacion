@@ -1,6 +1,9 @@
 class ServerErrors extends HTMLElement {
-  constructor(error) {
+  constructor() {
     super();
+
+    // Inicializar el mensaje de error como nulo
+    this.errorMessage = null;
 
     // Crear el shadow DOM
     const shadow = this.attachShadow({ mode: "open" });
@@ -9,18 +12,16 @@ class ServerErrors extends HTMLElement {
     const container = document.createElement("div");
     container.className = "helper";
 
-    const ERROR = document.createElement("div");
-    ERROR.innerText = error;
-    ERROR.classList.add("errorMessageDIV");
+    this.errorMessageElement = document.createElement("div");
+    this.errorMessageElement.classList.add("errorMessageDIV");
 
-    container.appendChild(ERROR);
+    container.appendChild(this.errorMessageElement);
 
-    // Crear el elemento astronaut
+    // Crear el elemento astronaut y sus partes
     const astronaut = document.createElement("div");
     astronaut.dataset.js = "astro";
     astronaut.className = "astronaut";
 
-    // Crear las partes del astronaut
     const astronautParts = [
       "head",
       "arm arm-left",
@@ -42,9 +43,13 @@ class ServerErrors extends HTMLElement {
     style.innerHTML = `@import 'web-components/ServerErrors/style/style.css'`;
 
     shadow.appendChild(style);
-
     shadow.appendChild(container);
     shadow.appendChild(astronaut);
+  }
+
+  setErrorMessage(errorMessage) {
+    this.errorMessage = errorMessage;
+    this.errorMessageElement.innerText = errorMessage; // Actualizar el texto del error
   }
 }
 

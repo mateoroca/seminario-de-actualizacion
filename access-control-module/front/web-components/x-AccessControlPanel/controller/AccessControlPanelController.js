@@ -38,10 +38,12 @@ class AccessControlPanelController {
   async setOptionsUserNames() {
     let res = await this.model.getUserNamesData();
 
+    const UserNames = res.data;
+
     try {
       const userNames = [];
 
-      for (const item of res) {
+      for (const item of UserNames) {
         userNames.push(item.user_name);
       }
       this.view.addSelectOptions(this.view.UserName, userNames);

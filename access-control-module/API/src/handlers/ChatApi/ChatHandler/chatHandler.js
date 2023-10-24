@@ -2,8 +2,7 @@ const { v4: uuidv4 } = require("uuid");
 const { cacheHandler } = require("../../../cache/cacheHandler.js");
 
 class ChatHandler {
-  constructor(userHandler) {
-    this.userHandler = userHandler;
+  constructor() {
     this.i18nOptions = {
       timeZone: "America/Argentina/Buenos_Aires",
       day: "2-digit",
@@ -33,10 +32,21 @@ class ChatHandler {
     }
   }
 
-  getChats() {
+  getChats(userOriginId, userTargetId) {
     try {
       const chats = cacheHandler.getChats();
-      return { status: true, message: "success to get chats", data: chats };
+
+      // Usamos la función `filter` para encontrar los chats que coinciden con userOriginId y userTargetId
+      const chatsFiltered = chats.filter(
+        (chat) =>
+          chat.userOriginId == userOriginId && chat.userTargetId == userTargetId
+      );
+
+      return {
+        status: true,
+        message: "success to get chats",
+        data: chatsFiltered,
+      };
     } catch (error) {
       return { status: false, message: "error to get chats" };
     }

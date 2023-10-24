@@ -53,11 +53,11 @@ class QuestionDialog extends HTMLElement {
   get response() {
     return new Promise((resolve, reject) => {
       this.confirmButton.onclick = () => {
-        resolve("true");
+        resolve(true);
       };
 
       this.cancelButton.onclick = () => {
-        resolve("false");
+        resolve(false);
       };
     });
   }

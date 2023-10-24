@@ -1,9 +1,9 @@
 class ModalWindowView extends HTMLElement {
-  #onouterclick(event) {
+  /*  #onouterclick(event) {
     if (event.target == this) {
       this.close();
     }
-  }
+  } */
 
   #_innerContent = undefined;
 
@@ -22,11 +22,11 @@ class ModalWindowView extends HTMLElement {
   }
 
   connectedCallback() {
-    this.addEventListener("click", this.#onouterclick.bind(this));
+    /* this.addEventListener("click", this.#onouterclick.bind(this)); */
   }
 
   disconnectedCallback() {
-    this.removeEventListener("click", this.#onouterclick);
+    /*   this.removeEventListener("click", this.#onouterclick); */
   }
 
   set content(innerContentElement) {

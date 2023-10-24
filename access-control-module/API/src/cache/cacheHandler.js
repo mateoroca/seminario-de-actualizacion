@@ -50,6 +50,10 @@ class CacheHandler {
     }
   }
 
+  setNewChat(chat) {
+    this.chats.push(chat);
+  }
+
   getActiveUsers() {
     return this.activeUsers;
   }

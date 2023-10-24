@@ -27,7 +27,7 @@ class Application extends HTMLElement {
     this.nv2 = new navBar(navBarView2, navBarController2, navBarModel2);
     this.alert = new Alert();
     this.accessControlPanel = new AccessControlPanel();
-    this.Chat = new Chat();
+    this.chat = new Chat();
     this.list = new List();
 
     this.currentState = null;
@@ -89,6 +89,38 @@ class Application extends HTMLElement {
     });
     window.addEventListener("trigger-delete-alert-instance", (e) => {
       this.view.footerSlot.removeChild(this.alert);
+    });
+    window.addEventListener("new-chat", (e) => {
+      const chat = e.detail;
+
+      this.chat.controller.setValues(
+        chat.chatId,
+        chat.userOriginId,
+        chat.userTargetId
+      );
+
+      this.changeState(this.chat);
+    });
+
+    window.addEventListener("accepted-chatProposal", (e) => {
+      const chat = e.detail;
+      console.log(chat);
+
+      // error aca !! no se cargan bien los datos no se si esta logica
+      // esta bien aplicada
+
+      this.chat.controller.setValues(
+        chat.chatId,
+        chat.userOriginId,
+        chat.userTargetId
+      );
+
+      this.changeState(this.chat);
+      console.log(
+        this.chat.controller.chatId,
+        this.chat.controller.userOriginId,
+        this.chat.controller.userTargetId
+      );
     });
   }
 }

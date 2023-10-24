@@ -79,7 +79,6 @@ class ProxiChatApi {
       const requestData = JSON.parse(body);
 
       const chatId = requestData.chatId;
-      const userTargetId = requestData.userTargetId;
 
       try {
         const chatMessageHandler = new ChatMessageHandler();
@@ -134,18 +133,30 @@ class ProxiChatApi {
   }
 
   getChats(req, res) {
-    try {
-      const userHandler = new UserHandler(
-        new DataBaseHandler(),
-        new GroupHandler(new DataBaseHandler())
-      );
-      const chatHandler = new ChatHandler(userHandler);
-      const response = chatHandler.getChats();
-      res.end(JSON.stringify(response));
-    } catch (error) {
-      res.writeHead(500, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ message: "Internal Server Error" }));
-    }
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+
+    req.on("end", async () => {
+      const requestData = JSON.parse(body);
+
+      const userOriginId = requestData.userOriginId;
+      const userTargetId = requestData.userTargetId;
+
+      try {
+        const chatHandler = new ChatHandler();
+        const response = chatHandler.getChats(userOriginId, userTargetId);
+
+        res.end(JSON.stringify(response));
+      } catch (error) {
+        console.error("Error en getUsers:", error);
+
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Internal Server Error" }));
+      }
+    });
   }
 
   newChatProposal(req, res) {
@@ -188,11 +199,66 @@ class ProxiChatApi {
     req.on("end", async () => {
       const requestData = JSON.parse(body);
 
-      const chatProposalId = requestData.chatProposalId;
+      const chatProposalId = requestData;
 
       try {
         const chatProposalHandler = new ChatProposalHandler();
         let response = await chatProposalHandler.confirmChatProposal(
+          chatProposalId
+        );
+
+        res.end(JSON.stringify(response));
+      } catch (error) {
+        console.error("Error en getUsers:", error);
+
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Internal Server Error" }));
+      }
+    });
+  }
+
+  rejectChatProposal(req, res) {
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+
+    req.on("end", async () => {
+      const requestData = JSON.parse(body);
+
+      const chatProposalId = requestData;
+
+      try {
+        const chatProposalHandler = new ChatProposalHandler();
+        let response = await chatProposalHandler.rejectChatProposal(
+          chatProposalId
+        );
+
+        res.end(JSON.stringify(response));
+      } catch (error) {
+        console.error("Error en getUsers:", error);
+
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Internal Server Error" }));
+      }
+    });
+  }
+  deleteChatProposal(req, res) {
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+
+    req.on("end", async () => {
+      const requestData = JSON.parse(body);
+
+      const chatProposalId = requestData;
+
+      try {
+        const chatProposalHandler = new ChatProposalHandler();
+        let response = await chatProposalHandler.deleteChatProposal(
           chatProposalId
         );
 

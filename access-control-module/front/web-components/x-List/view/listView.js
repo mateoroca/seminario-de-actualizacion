@@ -3,6 +3,8 @@ import { ServerErrors } from "../../ServerErrors/x-serverErrors.js";
 class ListView extends HTMLElement {
   constructor() {
     super();
+    this.error = new ServerErrors();
+
     this.container = document.createElement("div");
     this.container.classList.add("backgraundDiv");
 
@@ -121,8 +123,12 @@ class ListView extends HTMLElement {
     path2.setAttribute("fill", "#838383 ");
   }
   AddServerErrorsComponent(errorMessage) {
-    const error = new ServerErrors(errorMessage);
-    this.content.appendChild(error);
+    this.error.setErrorMessage(errorMessage);
+    this.content.appendChild(this.error);
+  }
+
+  removeErrorsComponent() {
+    this.content.remove(this.error);
   }
 }
 

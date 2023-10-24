@@ -25,9 +25,7 @@ class ChatProposalHandler {
         userTargetId: userTargetID,
         state: {
           pending: true,
-          active: false,
-          revoked: false,
-          finished: false,
+          acepted: false,
         },
         timeStamp: dateText,
       };
@@ -42,28 +40,23 @@ class ChatProposalHandler {
     try {
       const chatHandler = new ChatHandler();
 
-      const chatProposal = cacheHandler.chatsProposal.find(
+      const proposalIndex = cacheHandler.chatsProposal.findIndex(
         (proposal) => proposal.id == chatsProposalId
       );
 
-      if (chatProposal) {
-        chatProposal.state.pending = false;
-        chatProposal.state.active = true;
-
+      if (proposalIndex !== -1) {
+        const chatProposal = cacheHandler.chatsProposal[proposalIndex];
         const userOriginId = chatProposal.userOriginId;
         const userTargetId = chatProposal.userTargetId;
 
+        chatProposal.state.pending = false;
+        chatProposal.state.acepted = true;
+
         const chat = chatHandler.createChats(userOriginId, userTargetId);
-
-        //reemplaza la propuesta en el array:
-        const proposalIndex = cacheHandler.chatsProposal.findIndex(
-          (proposal) => proposal.id == chatsProposalId
-        );
-
-        if (proposalIndex !== -1) {
-          cacheHandler.chatsProposal[proposalIndex] = chatProposal;
-        }
-
+        cacheHandler.setNewChat(chat);
+        // Actualiza la propuesta en el array
+        cacheHandler.chatsProposal[proposalIndex] = chatProposal;
+        console.log(cacheHandler.chatsProposal);
         return {
           state: true,
           message: "Success to confirm Chat Proposal",
@@ -80,28 +73,31 @@ class ChatProposalHandler {
     }
   }
 
-  revokeChatProposal(chatsProposalId) {
+  rejectChatProposal(chatsProposalId) {
     try {
-      const chatProposal = cacheHandler.chatsProposal.find(
+      const proposalIndex = cacheHandler.chatsProposal.findIndex(
         (proposal) => proposal.id == chatsProposalId
       );
-      if (chatProposal) {
-        chatProposal.state.pending = false;
-        chatProposal.state.revoked = true;
+
+      if (proposalIndex !== -1) {
+        // Elimina la propuesta del array
+        cacheHandler.chatsProposal.splice(proposalIndex, 1);
+        console.log(cacheHandler.chatsProposal);
         return {
           state: true,
-          message: "Success to revoke Chat Proposal",
+          message: "Success to reject Chat Proposal",
         };
       } else {
         return {
           state: false,
-          message: "error not chats Proposal funded",
+          message: "Error: Chat Proposal not found",
         };
       }
     } catch (error) {
       console.log(error);
     }
   }
+
   getChatProposal(userId) {
     try {
       const proposals = cacheHandler.chatsProposal.filter(
@@ -118,18 +114,25 @@ class ChatProposalHandler {
       console.log(error);
     }
   }
-  getChatProposalId(userId) {
+  deleteChatProposal(chatsProposalId) {
     try {
-      const proposals = cacheHandler.chatsProposal.filter(
-        (proposal) =>
-          proposal.userOriginId == userId || proposal.userTargetId == userId
+      const proposalIndex = cacheHandler.chatsProposal.findIndex(
+        (proposal) => proposal.id == chatsProposalId
       );
 
-      if (proposals.length > 0) {
-        const Ids = proposals.map((proposal) => proposal.id);
-        return { state: true, data: Ids };
+      if (proposalIndex !== -1) {
+        // Elimina la propuesta del array
+        cacheHandler.chatsProposal.splice(proposalIndex, 1);
+        console.log(cacheHandler.chatsProposal);
+        return {
+          state: true,
+          message: "Success to confirm Chat Proposal",
+        };
       } else {
-        return { state: false, message: "No chat proposals found" };
+        return {
+          state: false,
+          message: "Error: Chat Proposal not found",
+        };
       }
     } catch (error) {
       console.log(error);

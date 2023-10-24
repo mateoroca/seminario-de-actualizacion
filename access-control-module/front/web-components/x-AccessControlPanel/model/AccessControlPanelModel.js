@@ -37,7 +37,7 @@ class AccessControlPanelModel {
         userId
       );
 
-      return response.Data;
+      return response;
     } catch (error) {
       console.log(error);
     }

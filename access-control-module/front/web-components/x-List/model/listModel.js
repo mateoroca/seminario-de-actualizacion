@@ -37,15 +37,15 @@ class ListModel {
     }
   }
 
-  async getChats() {
+  async getChats(data) {
     try {
       const userId = this.localStorageH.getOfLocalStorage("userId");
       const token = this.localStorageH.getOfLocalStorage("Token");
 
       let response = await this.apiClient.makeApiCall(
         "chatHandler/getchats",
-        "GET",
-        null,
+        "POST",
+        data,
         token,
         userId
       );
@@ -116,6 +116,25 @@ class ListModel {
 
       let response = await this.apiClient.makeApiCall(
         "chatproposalhandler/confirmchatproposal",
+        "POST",
+        chatProposalId,
+        token,
+        userId
+      );
+
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async rejectProposal(chatProposalId) {
+    try {
+      const userId = this.localStorageH.getOfLocalStorage("userId");
+      const token = this.localStorageH.getOfLocalStorage("Token");
+
+      let response = await this.apiClient.makeApiCall(
+        "chatproposalhandler/rejectchatproposal",
         "POST",
         chatProposalId,
         token,

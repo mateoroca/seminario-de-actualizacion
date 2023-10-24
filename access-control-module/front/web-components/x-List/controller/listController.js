@@ -29,16 +29,10 @@ class ListController extends HTMLElement {
   }
   async enable() {
     const res = await this.worker();
-    if (res == false) {
-      this.view.AddServerErrorsComponent(
-        "Ups! hubo un error por favor intente mas tarde"
-      );
-    }
 
-    this.intervalId = setInterval(() => {
-      this.worker();
-    }, 15000);
+    this.workerAndErrorManager(res);
   }
+
   disable() {
     this.view.removeEventListener("send", () => {
       this.sendAndSetMessage();
@@ -91,7 +85,7 @@ class ListController extends HTMLElement {
               timeStamp: currentTime,
             };
 
-            nameDiv.addEventListener("click", () => {
+            nameDiv.addEventListener("click", async () => {
               this.sendNewChatProposal(data);
             });
 
@@ -104,7 +98,10 @@ class ListController extends HTMLElement {
         this.setActivitiStateOfUser(activeUsersIds);
 
         this.chatsProposals = response3.data;
+        console.log(this.chatsProposals);
         this.setNewChatProposal(this.chatsProposals);
+
+        this.askForChatProposalsAcepted(this.chatsProposals);
 
         return true;
       } else {
@@ -127,7 +124,7 @@ class ListController extends HTMLElement {
     });
   }
 
-  setNewChatProposal(chatsProposals) {
+  async setNewChatProposal(chatsProposals) {
     const userId = this.localStorageH.getOfLocalStorage("userId");
 
     this.UserDivs.forEach((div) => {
@@ -139,12 +136,81 @@ class ListController extends HTMLElement {
           chatProposal.userOriginId == userIdValue
         ) {
           this.view.setNewProposal(div);
+          const proposalIcon = div.querySelector("#svg2");
+
+          proposalIcon.addEventListener("click", async () => {
+            this.acceptOrRejectChatProposal(chatProposal.id, div);
+          });
+
           break; // Termina el bucle si se cumple la condición
         } else {
           this.view.setNotProposals(div);
         }
       }
     });
+  }
+
+  async acceptOrRejectChatProposal(proposalId, div) {
+    this.modal.open();
+    const response = await this.questionDialog.response;
+
+    if (response == true) {
+      const res = await this.model.confirmChatProposal(proposalId);
+
+      if (res.state == true) {
+        window.dispatchEvent(new CustomEvent("new-chat", { detail: res.data }));
+        console.log(res);
+      }
+
+      this.modal.close();
+    } else {
+      const res = await this.model.rejectProposal(proposalId);
+      console.log(res);
+      this.view.setNotProposals(div);
+      this.modal.close();
+    }
+  }
+
+  askForChatProposalsAcepted(chatsProposals) {
+    const userId = this.localStorageH.getOfLocalStorage("userId");
+
+    chatsProposals.forEach(async (chatProposal) => {
+      if (chatProposal.userOriginId == userId) {
+        if (chatProposal.state.acepted == true) {
+          const data = {
+            userOriginId: chatProposal.userOriginId,
+            userTargetId: chatProposal.userTargetId,
+          };
+
+          const res = await this.model.getChats(data);
+
+          console.log(res.data);
+
+          window.dispatchEvent(
+            new CustomEvent("accepted-chatProposal", { detail: res.data })
+          );
+        }
+      }
+    });
+  }
+
+  workerAndErrorManager(res) {
+    if (res == true) {
+      this.intervalId = setInterval(async () => {
+        const newRes = await this.worker();
+        if (newRes !== true) {
+          this.view.AddServerErrorsComponent(
+            "  Ups! hubo un error por favor intente mas tarde"
+          );
+        } else {
+          this.view.removeErrorsComponent();
+        }
+      }, 15000);
+    } else {
+      this.view.AddServerErrorsComponent(
+        "  Ups! hubo un error por favor intente mas tarde"
+      );
+    }
   }
 }
 
