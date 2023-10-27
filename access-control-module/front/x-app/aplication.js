@@ -9,9 +9,10 @@ import { navBarModel2 } from "../web-components/x-nav-bar/model/navBarModel2.js"
 import { navBarController2 } from "../web-components/x-nav-bar/controller/nabBarController2.js";
 import { Alert } from "../web-components/x-alert/x-alert.js";
 import { AccessControlPanel } from "../web-components/x-AccessControlPanel/AccessControlPanel.js";
-import { Chat } from "../web-components/x-Chat/x-Chat.js";
-import { List } from "../web-components/x-List/x-list.js";
+/* import { Chat } from "../web-components/x-Chat/x-Chat.js";
+import { List } from "../web-components/x-List/x-list.js"; */
 import { ServerErrors } from "../web-components/ServerErrors/x-serverErrors.js";
+import { MessageSystemView } from "../web-components/messageSystem/MessageSystemView.js";
 
 class Application extends HTMLElement {
   constructor() {
@@ -27,8 +28,10 @@ class Application extends HTMLElement {
     this.nv2 = new navBar(navBarView2, navBarController2, navBarModel2);
     this.alert = new Alert();
     this.accessControlPanel = new AccessControlPanel();
-    this.chat = new Chat();
-    this.list = new List();
+
+    this.messageSysyem = new MessageSystemView();
+    /*    this.chat = new Chat();
+    this.list = new List(); */
 
     this.currentState = null;
 
@@ -54,7 +57,7 @@ class Application extends HTMLElement {
 
   render() {
     this.view.headerSlot.appendChild(this.nv);
-    this.changeState(this.list);
+    this.changeState(this.messageSysyem);
   }
 
   setupEventListeners() {
@@ -89,38 +92,6 @@ class Application extends HTMLElement {
     });
     window.addEventListener("trigger-delete-alert-instance", (e) => {
       this.view.footerSlot.removeChild(this.alert);
-    });
-    window.addEventListener("new-chat", (e) => {
-      const chat = e.detail;
-
-      this.chat.controller.setValues(
-        chat.chatId,
-        chat.userOriginId,
-        chat.userTargetId
-      );
-
-      this.changeState(this.chat);
-    });
-
-    window.addEventListener("accepted-chatProposal", (e) => {
-      const chat = e.detail;
-      console.log(chat);
-
-      // error aca !! no se cargan bien los datos no se si esta logica
-      // esta bien aplicada
-
-      this.chat.controller.setValues(
-        chat.chatId,
-        chat.userOriginId,
-        chat.userTargetId
-      );
-
-      this.changeState(this.chat);
-      console.log(
-        this.chat.controller.chatId,
-        this.chat.controller.userOriginId,
-        this.chat.controller.userTargetId
-      );
     });
   }
 }

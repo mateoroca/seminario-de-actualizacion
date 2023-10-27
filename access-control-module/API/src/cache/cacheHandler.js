@@ -3,7 +3,7 @@ class CacheHandler {
     this.tokensCache = new Map();
     this.chats = [];
     this.chatsProposal = [];
-    this.chatsMessages = new Map();
+    this.chatsMessages = new Map(); // Hay una dualidad aca
     this.activeUsers = [];
   }
 

@@ -26,8 +26,6 @@ app.get("/", (req, res) => {
 
 /*--------------- funciones al iniciar servidor --------*/
 
-/* proxiChatApi.createChats(); */
-
 /* --------------------------------------------------- */
 
 app.post("/sessionHandler/login", proxiSessionHandler.login);

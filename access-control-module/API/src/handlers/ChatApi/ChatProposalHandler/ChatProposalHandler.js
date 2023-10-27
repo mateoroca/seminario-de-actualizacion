@@ -53,10 +53,10 @@ class ChatProposalHandler {
         chatProposal.state.acepted = true;
 
         const chat = chatHandler.createChats(userOriginId, userTargetId);
-        cacheHandler.setNewChat(chat);
+
         // Actualiza la propuesta en el array
         cacheHandler.chatsProposal[proposalIndex] = chatProposal;
-        console.log(cacheHandler.chatsProposal);
+
         return {
           state: true,
           message: "Success to confirm Chat Proposal",

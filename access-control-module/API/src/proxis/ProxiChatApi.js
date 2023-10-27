@@ -142,12 +142,11 @@ class ProxiChatApi {
     req.on("end", async () => {
       const requestData = JSON.parse(body);
 
-      const userOriginId = requestData.userOriginId;
-      const userTargetId = requestData.userTargetId;
+      const userOriginId = requestData;
 
       try {
         const chatHandler = new ChatHandler();
-        const response = chatHandler.getChats(userOriginId, userTargetId);
+        const response = chatHandler.getChats(userOriginId);
 
         res.end(JSON.stringify(response));
       } catch (error) {
