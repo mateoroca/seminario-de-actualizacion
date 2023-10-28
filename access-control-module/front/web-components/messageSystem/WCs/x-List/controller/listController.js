@@ -64,7 +64,7 @@ class ListController extends HTMLElement {
     const [response, response2, response3, response4] = await Promise.all([
       this.model.getUsers(),
       this.model.getActiveUsers(),
-      this.model.getServerChatProposals(userId), //me traigo los chats vinculado de alguna manera a mi ID
+      this.model.getServerChatProposals(userId),
       this.model.getChats(userId),
     ]);
 
@@ -184,7 +184,7 @@ class ListController extends HTMLElement {
 
           writeIcon.addEventListener("click", this.eventListener2);
         } else {
-          this.view.setNotAvaibleChat(div);
+          /* this.view.setNotAvaibleChat(div); */
         }
       }
     });

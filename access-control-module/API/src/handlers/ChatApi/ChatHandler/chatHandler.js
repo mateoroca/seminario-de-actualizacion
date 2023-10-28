@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require("uuid");
 const { cacheHandler } = require("../../../cache/cacheHandler.js");
+const { Encryptor } = require("../../Encryptor/Encryptor.js");
 
 class ChatHandler {
   constructor() {
@@ -11,6 +12,7 @@ class ChatHandler {
       hour: "2-digit",
       minute: "2-digit",
     };
+    this.encryptor = new Encryptor();
   }
 
   createChats(userOriginId, userTargetId) {
@@ -22,6 +24,7 @@ class ChatHandler {
         chatId: uuidv4(),
         userOriginId: userOriginId,
         userTargetId: userTargetId,
+        secretKey: this.encryptor.generateSecretKey(),
         timeStamp: dateText,
       };
       cacheHandler.chats.push(chat);

@@ -20,7 +20,7 @@ class ChatMessageHandler {
       body: body,
       timesStampSended: timeSended,
       timesStampReceived: dateText,
-      state: { sended: true, received: true },
+      state: { sended: true, received: false },
     };
     try {
       if (!cacheHandler.chatsMessages.has(chatId)) {
@@ -43,27 +43,16 @@ class ChatMessageHandler {
       const values = chatMessages.get(chatId);
 
       if (values && values.length > 0) {
+        values.forEach((message) => {
+          message.state.received = true; //se marcan como received
+        });
+        console.log(values);
         return values;
       } else {
         return [];
       }
     } catch (error) {
       throw new Error("Error can not get chat messages");
-    }
-  }
-
-  setChatMessageAsReceived(messageId) {
-    const chatMessages = cacheHandler.chatsMessages.get(messageId);
-
-    if (chatMessages) {
-      chatMessages.forEach((message) => {
-        if (message.id == messageId) {
-          message.state.received = true;
-        }
-      });
-      return { state: true, message: "success to set Received state" };
-    } else {
-      return { state: false, message: "not messages with that id" };
     }
   }
 }

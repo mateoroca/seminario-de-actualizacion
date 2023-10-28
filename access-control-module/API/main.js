@@ -3,11 +3,9 @@ const { ProxiSessionHandler } = require("./src/proxis/ProxiSessionHandler.js");
 const { ProxiGroupHandler } = require("./src/proxis/ProxiGroupHandler.js");
 const { ProxiUserHandler } = require("./src/proxis/ProxiUserHandler.js");
 const { ProxiChatApi } = require("./src/proxis/ProxiChatApi.js");
-const {
-  ChatProposalHandler,
-} = require("./src/handlers/ChatApi/ChatProposalHandler/ChatProposalHandler");
 
 require("dotenv").config();
+
 //////////////////////////////////////////////////////////////////////////////////
 
 const app = new Server();

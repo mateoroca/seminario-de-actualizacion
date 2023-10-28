@@ -1,15 +1,20 @@
 import { LocalStorageHandler } from "../../../../common/LocalStorageHandler.js";
+import { Encryptor } from "../../../../../web-components/common/Encryptor.js";
 
 class ChatController {
   constructor(innerView, innerModel) {
     this.view = innerView;
     this.model = innerModel;
+    /* --------------------------------------------------- */
     this.localStorageH = new LocalStorageHandler();
+    this.encryptor = new Encryptor();
+    /* --------------------------------------------------- */
     this.messagesAttached = [];
     this.intervalId = null;
     this.chatId;
     this.userOriginId;
     this.userTargetId;
+    this.secretKey;
   }
   enable() {
     this.view.addEventListener("send", () => {
@@ -34,20 +39,21 @@ class ChatController {
     const minutes = currentDate.getMinutes().toString().padStart(2, "0");
     const currentTime = `${hours}:${minutes}`;
 
-    console.log(this.chatId, this.userOriginId, this.userTargetId);
-
     const messageBody = this.view.getMessageInput();
+
+    const encryptedMessageBody = this.encryptor.encryptMessage(
+      messageBody,
+      this.secretKey
+    );
 
     const message = {
       chatId: this.chatId,
       userOriginId: userId,
       userTargetId: this.userOriginId,
-      MessageBody: messageBody,
+      MessageBody: encryptedMessageBody,
       timesStampSended: currentTime,
       state: { sended: true, received: false },
     };
-
-    console.log(message);
 
     const liMessage = this.view.setNewMessage(messageBody, currentTime);
 
@@ -68,24 +74,37 @@ class ChatController {
       chatId: this.chatId,
     };
 
-    /*    console.log(data); */
-
     let response = await this.model.getServerMessages(data);
 
     const arrayOfMessages = response.arrayOfMessages;
 
+    console.log(arrayOfMessages);
+
     if (response.status == true) {
-      arrayOfMessages.forEach((item) => {
-        const id = item.id;
-        const userTargetId = item.userTargetId;
+      arrayOfMessages.forEach((message) => {
+        const id = message.id;
+        const userTargetId = message.userTargetId;
 
         if (userId == userTargetId) {
           if (!this.messagesAttached.includes(id)) {
-            const body = item.body;
-            const timesStampSended = item.timesStampSended;
+            const body = message.body;
 
-            this.view.setReceivedMessages(body, timesStampSended);
-            this.messagesAttached.push(id);
+            const decryptMessageBody = this.encryptor.decryptMessage(
+              body,
+              this.secretKey
+            );
+
+            const timesStampSended = message.timesStampSended;
+
+            if (message.state.received == true) {
+              //valido si el estado es received
+
+              this.view.setReceivedMessages(
+                decryptMessageBody,
+                timesStampSended
+              );
+              this.messagesAttached.push(id);
+            }
           }
         }
       });
@@ -93,10 +112,11 @@ class ChatController {
   }
   //////////////////////////////////////////////////////////
 
-  setValues(chatId, userOriginId, userTargetId) {
+  setValues(chatId, userOriginId, userTargetId, secretKey) {
     this.chatId = chatId;
     this.userOriginId = userOriginId;
     this.userTargetId = userTargetId;
+    this.secretKey = secretKey;
   }
 }
 

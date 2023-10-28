@@ -9,8 +9,6 @@ import { navBarModel2 } from "../web-components/x-nav-bar/model/navBarModel2.js"
 import { navBarController2 } from "../web-components/x-nav-bar/controller/nabBarController2.js";
 import { Alert } from "../web-components/x-alert/x-alert.js";
 import { AccessControlPanel } from "../web-components/x-AccessControlPanel/AccessControlPanel.js";
-/* import { Chat } from "../web-components/x-Chat/x-Chat.js";
-import { List } from "../web-components/x-List/x-list.js"; */
 import { ServerErrors } from "../web-components/ServerErrors/x-serverErrors.js";
 import { MessageSystemView } from "../web-components/messageSystem/MessageSystemView.js";
 
@@ -30,8 +28,6 @@ class Application extends HTMLElement {
     this.accessControlPanel = new AccessControlPanel();
 
     this.messageSysyem = new MessageSystemView();
-    /*    this.chat = new Chat();
-    this.list = new List(); */
 
     this.currentState = null;
 
@@ -79,7 +75,7 @@ class Application extends HTMLElement {
     window.addEventListener("trigger-loggedIn-instance", () => {
       this.view.headerSlot.removeChild(this.nv);
       this.view.headerSlot.appendChild(this.nv2);
-      this.changeState(this.accessControlPanel);
+      this.changeState(this.messageSysyem);
     });
     window.addEventListener("trigger-logout-instance", () => {
       this.view.headerSlot.removeChild(this.nv2);
