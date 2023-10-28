@@ -1,0 +1,19 @@
+.MainContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+/* Estilos para el chat */
+.Chat {
+  margin-right: 10px;
+  /* Espacio a la derecha del chat */
+}
+
+/* Estilos para la lista */
+.List {
+  margin-left: 10px;
+  /* Espacio a la izquierda de la lista */
+}

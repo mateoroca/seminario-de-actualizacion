@@ -25,6 +25,7 @@ class ChatHandler {
         timeStamp: dateText,
       };
       cacheHandler.chats.push(chat);
+
       return chat;
     } catch (error) {
       console.log(error);
@@ -32,14 +33,14 @@ class ChatHandler {
     }
   }
 
-  getChats(userOriginId, userTargetId) {
+  getChats(userOriginId) {
     try {
       const chats = cacheHandler.getChats();
 
       // Usamos la función `filter` para encontrar los chats que coinciden con userOriginId y userTargetId
       const chatsFiltered = chats.filter(
         (chat) =>
-          chat.userOriginId == userOriginId && chat.userTargetId == userTargetId
+          chat.userOriginId == userOriginId || chat.userTargetId == userOriginId
       );
 
       return {

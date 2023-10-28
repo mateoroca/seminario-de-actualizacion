@@ -1,4 +1,4 @@
-import { LocalStorageHandler } from "../../common/LocalStorageHandler.js";
+import { LocalStorageHandler } from "../../../../common/LocalStorageHandler.js";
 
 class ChatController {
   constructor(innerView, innerModel) {
@@ -68,7 +68,7 @@ class ChatController {
       chatId: this.chatId,
     };
 
-    console.log(data);
+    /*    console.log(data); */
 
     let response = await this.model.getServerMessages(data);
 
@@ -85,7 +85,7 @@ class ChatController {
             const timesStampSended = item.timesStampSended;
 
             this.view.setReceivedMessages(body, timesStampSended);
-            this.MessagesSet.push(id);
+            this.messagesAttached.push(id);
           }
         }
       });

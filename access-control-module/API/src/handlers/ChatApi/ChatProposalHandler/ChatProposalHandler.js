@@ -52,15 +52,14 @@ class ChatProposalHandler {
         chatProposal.state.pending = false;
         chatProposal.state.acepted = true;
 
-        const chat = chatHandler.createChats(userOriginId, userTargetId);
-        cacheHandler.setNewChat(chat);
+        /* const chat =  */ chatHandler.createChats(userOriginId, userTargetId);
+
         // Actualiza la propuesta en el array
         cacheHandler.chatsProposal[proposalIndex] = chatProposal;
-        console.log(cacheHandler.chatsProposal);
+
         return {
           state: true,
           message: "Success to confirm Chat Proposal",
-          data: chat,
         };
       } else {
         return {
@@ -109,30 +108,6 @@ class ChatProposalHandler {
         return { state: true, data: proposals };
       } else {
         return { state: false, message: "No chat proposals found" };
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  deleteChatProposal(chatsProposalId) {
-    try {
-      const proposalIndex = cacheHandler.chatsProposal.findIndex(
-        (proposal) => proposal.id == chatsProposalId
-      );
-
-      if (proposalIndex !== -1) {
-        // Elimina la propuesta del array
-        cacheHandler.chatsProposal.splice(proposalIndex, 1);
-        console.log(cacheHandler.chatsProposal);
-        return {
-          state: true,
-          message: "Success to confirm Chat Proposal",
-        };
-      } else {
-        return {
-          state: false,
-          message: "Error: Chat Proposal not found",
-        };
       }
     } catch (error) {
       console.log(error);

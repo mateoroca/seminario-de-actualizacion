@@ -26,8 +26,6 @@ app.get("/", (req, res) => {
 
 /*--------------- funciones al iniciar servidor --------*/
 
-/* proxiChatApi.createChats(); */
-
 /* --------------------------------------------------- */
 
 app.post("/sessionHandler/login", proxiSessionHandler.login);
@@ -62,11 +60,6 @@ app.post(
 app.post(
   "/chatproposalhandler/rejectchatproposal",
   proxiChatApi.rejectChatProposal
-);
-
-app.post(
-  "/chatproposalhandler/deletechatproposal",
-  proxiChatApi.deleteChatProposal
 );
 
 // Iniciar el servidor en el puerto 3000

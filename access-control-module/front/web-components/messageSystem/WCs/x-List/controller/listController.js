@@ -1,6 +1,6 @@
-import { LocalStorageHandler } from "../../common/LocalStorageHandler.js";
-import { ModalWindowView } from "../../modalwindow/x-modalWindow.js";
-import { QuestionDialog } from "../../questionDialog/x-questionDialog.js";
+import { LocalStorageHandler } from "../../../../common/LocalStorageHandler.js";
+import { ModalWindowView } from "../../../../modalwindow/x-modalWindow.js";
+import { QuestionDialog } from "../../../../questionDialog/x-questionDialog.js";
 
 class ListController extends HTMLElement {
   constructor(innerView, innerModel) {
@@ -26,11 +26,17 @@ class ListController extends HTMLElement {
     };
 
     this.modal.content = this.questionDialog;
+
+    ///////////////////////////////////////////////////////////
+
+    this.newRes = false;
+    this.eventListener = null;
+    this.eventListener2 = null;
   }
   async enable() {
-    const res = await this.worker();
+    this.newRes = await this.worker();
 
-    this.workerAndErrorManager(res);
+    this.workerAndErrorManager(this.newRes);
   }
 
   disable() {
@@ -55,15 +61,18 @@ class ListController extends HTMLElement {
     const minutes = currentDate.getMinutes().toString().padStart(2, "0");
     const currentTime = `${hours}:${minutes}`;
 
-    const [response, response2, response3] = await Promise.all([
+    const [response, response2, response3, response4] = await Promise.all([
       this.model.getUsers(),
       this.model.getActiveUsers(),
-      this.model.getServerChatProposals(userId),
+      this.model.getServerChatProposals(userId), //me traigo los chats vinculado de alguna manera a mi ID
+      this.model.getChats(userId),
     ]);
 
     try {
-      if (response && response2 && response3) {
+      if (response && response2 && response3 && response4) {
         let users = response.data;
+        let chats = response4.data;
+        this.setNewChats(chats);
 
         for (const item of users) {
           if (item.id == userId) {
@@ -86,7 +95,7 @@ class ListController extends HTMLElement {
             };
 
             nameDiv.addEventListener("click", async () => {
-              this.sendNewChatProposal(data);
+              this.sendNewChatProposal(data); // que hago con esto? es de la vista o del controlador?
             });
 
             this.usersAttached.push(item.id);
@@ -98,10 +107,8 @@ class ListController extends HTMLElement {
         this.setActivitiStateOfUser(activeUsersIds);
 
         this.chatsProposals = response3.data;
-        console.log(this.chatsProposals);
-        this.setNewChatProposal(this.chatsProposals);
 
-        this.askForChatProposalsAcepted(this.chatsProposals);
+        this.setNewChatProposal(this.chatsProposals);
 
         return true;
       } else {
@@ -136,15 +143,48 @@ class ListController extends HTMLElement {
           chatProposal.userOriginId == userIdValue
         ) {
           this.view.setNewProposal(div);
+
           const proposalIcon = div.querySelector("#svg2");
-
-          proposalIcon.addEventListener("click", async () => {
+          // que hago con esto? es de la vista o del controlador?
+          this.eventListener = (e) => {
             this.acceptOrRejectChatProposal(chatProposal.id, div);
-          });
+          };
 
-          break; // Termina el bucle si se cumple la condición
+          proposalIcon.addEventListener("click", this.eventListener);
         } else {
           this.view.setNotProposals(div);
+        }
+      }
+    });
+  }
+
+  setNewChats(chats) {
+    this.UserDivs.forEach((div) => {
+      const userIdValue = div.getAttribute("data-userid");
+
+      for (const chat of chats) {
+        if (
+          chat.userOriginId == userIdValue ||
+          chat.userTargetId == userIdValue
+        ) {
+          const writeIcon = div.querySelector("#svg3");
+          // que hago con esto? es de la vista o del controlador?
+          this.view.setNewAvaibleChat(div);
+
+          const nameDiv = div.querySelector("#nameDiv");
+          const userName = nameDiv.textContent;
+
+          this.eventListener2 = (e) => {
+            this.dispatchEvent(
+              new CustomEvent("new-chat", {
+                detail: { chat, userName },
+              })
+            );
+          };
+
+          writeIcon.addEventListener("click", this.eventListener2);
+        } else {
+          this.view.setNotAvaibleChat(div);
         }
       }
     });
@@ -155,55 +195,29 @@ class ListController extends HTMLElement {
     const response = await this.questionDialog.response;
 
     if (response == true) {
-      const res = await this.model.confirmChatProposal(proposalId);
-
-      if (res.state == true) {
-        window.dispatchEvent(new CustomEvent("new-chat", { detail: res.data }));
-        console.log(res);
-      }
+      await this.model.confirmChatProposal(proposalId);
+      await this.model.rejectProposal(proposalId);
+      this.view.setNotProposals(div);
 
       this.modal.close();
     } else {
+      //aca se deberia remover el addEventLisener del ChatProposal div
       const res = await this.model.rejectProposal(proposalId);
-      console.log(res);
+
+      const proposalIcon = div.querySelector("#svg2");
+      proposalIcon.removeEventListener("click", this.eventListener);
+
       this.view.setNotProposals(div);
+
       this.modal.close();
     }
-  }
-
-  //codigo a  refactorizar :
-
-  /* una idea seria poner este codigo en el WCchat y que llame al metodo del modelo
-  para que se traiga las chatProposals las filtre y obtega de ahi los datos del chat directamenete */
-
-  askForChatProposalsAcepted(chatsProposals) {
-    const userId = this.localStorageH.getOfLocalStorage("userId");
-
-    chatsProposals.forEach(async (chatProposal) => {
-      if (chatProposal.userOriginId == userId) {
-        if (chatProposal.state.acepted == true) {
-          const data = {
-            userOriginId: chatProposal.userOriginId,
-            userTargetId: chatProposal.userTargetId,
-          };
-
-          const res = await this.model.getChats(data);
-
-          console.log(res.data);
-
-          window.dispatchEvent(
-            new CustomEvent("accepted-chatProposal", { detail: res.data })
-          );
-        }
-      }
-    });
   }
 
   workerAndErrorManager(res) {
     if (res == true) {
       this.intervalId = setInterval(async () => {
-        const newRes = await this.worker();
-        if (newRes !== true) {
+        this.newRes = await this.worker();
+        if (this.newRes !== true) {
           this.view.AddServerErrorsComponent(
             "  Ups! hubo un error por favor intente mas tarde"
           );
