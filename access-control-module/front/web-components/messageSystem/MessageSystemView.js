@@ -13,20 +13,6 @@ class MessageSystemView extends HTMLElement {
     this.list = new List();
     this.localStorageHandler = new LocalStorageHandler();
     ////////////////////////////////
-    const ec = new Encryptor();
-    const encryptedMessage = ec.encryptMessage(
-      "hola",
-      "1de7376cf4ac0bdf408c971e228ede03bf8dae64ab76bb9dde7b4361c548e0f8"
-    );
-    console.log(encryptedMessage);
-
-    const desencryptedMessage = ec.decryptMessage(
-      encryptedMessage,
-      "1de7376cf4ac0bdf408c971e228ede03bf8dae64ab76bb9dde7b4361c548e0f8"
-    );
-
-    console.log(desencryptedMessage);
-    ////////////////////////////////
 
     this.list.controller.addEventListener("new-chat", async (e) => {
       const userId = this.localStorageHandler.getOfLocalStorage("userId");

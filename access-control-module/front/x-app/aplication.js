@@ -53,7 +53,7 @@ class Application extends HTMLElement {
 
   render() {
     this.view.headerSlot.appendChild(this.nv);
-    this.changeState(this.messageSysyem);
+    this.changeState(this.holdin);
   }
 
   setupEventListeners() {

@@ -18,6 +18,7 @@ class ChatController {
   }
   enable() {
     this.view.addEventListener("send", () => {
+      // se escuchan dos eventos seguidos
       this.sendAndSetMessage();
       this.view.cleanInput();
     });
