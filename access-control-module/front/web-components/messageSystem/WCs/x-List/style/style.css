@@ -1,13 +1,13 @@
 .backgraundDiv {
 
   position: relative;
-  width: 21rem;
+  width: 20rem;
   height: auto;
-  background: rgb(5, 103, 215);
+  background: rgba(0, 255, 200, 0.331);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 5px;
   box-sizing: border-box;
 
 }
@@ -21,7 +21,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(315deg, #00ff75 0%, #3700ff 100%);
+
 }
 
 .backgraundDiv::after {
@@ -31,18 +31,17 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(315deg, #00ff75 0%, #3700ff 100%);
   filter: blur(30px);
 }
 
 .subContainer {
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.304);
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 28rem;
+  min-height: 24rem;
 
 }
 
@@ -57,9 +56,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: start;
-  background: linear-gradient(315deg, #3700ff 0%, #031c5b 100%);
   border-radius: 8px;
-  box-shadow: 0px 0px 5px -3px #000000;
+  background-image: linear-gradient(163deg, #00a14b 0%, #3700ff 100%);
+  box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
 
 }
 

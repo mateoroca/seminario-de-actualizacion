@@ -1,7 +1,7 @@
 .card {
-  margin: 5rem;
+  margin-left: 3rem;
   width: 420px;
-  background-color: #171717a8;
+  background-color: rgba(0, 255, 200, 0.331);
   border: 1px solid rgb(0, 255, 200);
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
@@ -17,7 +17,7 @@
 }
 
 .chat-window {
-  background-color: #171717;
+  background-color: #17171756;
   height: 300px;
   overflow-y: scroll;
 
