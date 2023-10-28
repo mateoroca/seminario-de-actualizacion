@@ -62,11 +62,6 @@ app.post(
   proxiChatApi.rejectChatProposal
 );
 
-app.post(
-  "/chatproposalhandler/deletechatproposal",
-  proxiChatApi.deleteChatProposal
-);
-
 // Iniciar el servidor en el puerto 3000
 app.start(port);
 

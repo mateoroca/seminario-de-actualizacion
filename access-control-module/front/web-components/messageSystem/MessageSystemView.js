@@ -1,5 +1,6 @@
 import { Chat } from "./WCs/x-Chat/x-Chat.js";
 import { List } from "./WCs/x-List/x-list.js";
+import { LocalStorageHandler } from "../common/LocalStorageHandler.js";
 
 class MessageSystemView extends HTMLElement {
   constructor() {
@@ -9,19 +10,34 @@ class MessageSystemView extends HTMLElement {
 
     this.chat = new Chat();
     this.list = new List();
+    this.localStorageHandler = new LocalStorageHandler();
     ////////////////////////////////
     this.chats = [];
 
     ////////////////////////////////
 
-    this.list.controller.addEventListener(
-      "Proposal-confirmed-therefore-new-chat",
-      async (e) => {
-        const chat = e.detail;
-        this.chats.push(chat);
-        console.log(chat);
+    this.list.controller.addEventListener("new-chat", async (e) => {
+      const userId = this.localStorageHandler.getOfLocalStorage("userId");
+      const eventData = e.detail;
+      const chat = eventData.chat;
+      const userName = eventData.userName;
+
+      console.log(eventData);
+
+      const chatId = chat.chatId;
+      const userOrigin = chat.userOriginId;
+      const userTarget = chat.userTargetId;
+
+      this.chats.push(chat);
+
+      if (userOrigin == userId) {
+        this.chat.controller.setValues(chatId, userTarget, userOrigin);
+        this.chat.view.setChatTitle(userName);
+      } else {
+        this.chat.controller.setValues(chatId, userOrigin, userTarget);
+        this.chat.view.setChatTitle(userName);
       }
-    );
+    });
 
     ////////////////////////////////
 

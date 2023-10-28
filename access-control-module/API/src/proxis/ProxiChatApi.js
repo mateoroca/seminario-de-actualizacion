@@ -243,33 +243,6 @@ class ProxiChatApi {
       }
     });
   }
-  deleteChatProposal(req, res) {
-    let body = "";
-
-    req.on("data", (chunk) => {
-      body += chunk.toString();
-    });
-
-    req.on("end", async () => {
-      const requestData = JSON.parse(body);
-
-      const chatProposalId = requestData;
-
-      try {
-        const chatProposalHandler = new ChatProposalHandler();
-        let response = await chatProposalHandler.deleteChatProposal(
-          chatProposalId
-        );
-
-        res.end(JSON.stringify(response));
-      } catch (error) {
-        console.error("Error en getUsers:", error);
-
-        res.writeHead(500, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ message: "Internal Server Error" }));
-      }
-    });
-  }
 }
 
 module.exports = { ProxiChatApi };

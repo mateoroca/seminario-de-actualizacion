@@ -85,7 +85,7 @@ class ChatController {
             const timesStampSended = item.timesStampSended;
 
             this.view.setReceivedMessages(body, timesStampSended);
-            this.MessagesSet.push(id);
+            this.messagesAttached.push(id);
           }
         }
       });

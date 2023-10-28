@@ -31,6 +31,7 @@ class ListController extends HTMLElement {
 
     this.newRes = false;
     this.eventListener = null;
+    this.eventListener2 = null;
   }
   async enable() {
     this.newRes = await this.worker();
@@ -67,16 +68,11 @@ class ListController extends HTMLElement {
       this.model.getChats(userId),
     ]);
 
-    console.log(response4);
     try {
       if (response && response2 && response3 && response4) {
-        this.dispatchEvent(
-          new CustomEvent("Proposal-confirmed-therefore-new-chat", {
-            detail: response4.data,
-          })
-        );
-
         let users = response.data;
+        let chats = response4.data;
+        this.setNewChats(chats);
 
         for (const item of users) {
           if (item.id == userId) {
@@ -111,7 +107,7 @@ class ListController extends HTMLElement {
         this.setActivitiStateOfUser(activeUsersIds);
 
         this.chatsProposals = response3.data;
-        /*  console.log(this.chatsProposals); */
+
         this.setNewChatProposal(this.chatsProposals);
 
         return true;
@@ -149,7 +145,7 @@ class ListController extends HTMLElement {
           this.view.setNewProposal(div);
 
           const proposalIcon = div.querySelector("#svg2");
-
+          // que hago con esto? es de la vista o del controlador?
           this.eventListener = (e) => {
             this.acceptOrRejectChatProposal(chatProposal.id, div);
           };
@@ -162,29 +158,51 @@ class ListController extends HTMLElement {
     });
   }
 
+  setNewChats(chats) {
+    this.UserDivs.forEach((div) => {
+      const userIdValue = div.getAttribute("data-userid");
+
+      for (const chat of chats) {
+        if (
+          chat.userOriginId == userIdValue ||
+          chat.userTargetId == userIdValue
+        ) {
+          const writeIcon = div.querySelector("#svg3");
+          // que hago con esto? es de la vista o del controlador?
+          this.view.setNewAvaibleChat(div);
+
+          const nameDiv = div.querySelector("#nameDiv");
+          const userName = nameDiv.textContent;
+
+          this.eventListener2 = (e) => {
+            this.dispatchEvent(
+              new CustomEvent("new-chat", {
+                detail: { chat, userName },
+              })
+            );
+          };
+
+          writeIcon.addEventListener("click", this.eventListener2);
+        } else {
+          this.view.setNotAvaibleChat(div);
+        }
+      }
+    });
+  }
+
   async acceptOrRejectChatProposal(proposalId, div) {
     this.modal.open();
     const response = await this.questionDialog.response;
 
     if (response == true) {
-      /* const res = */ await this.model.confirmChatProposal(proposalId); //no deberia devolver el chat
-
-      /*  if (res.state == true) {
-        this.dispatchEvent(
-          new CustomEvent("Proposal-confirmed-therefore-new-chat", {
-            detail: res.data,
-          })
-        );
-      } */
-
-      //aca se deberia eliminar la Proposal si fue aceptada y ya creado el chat
+      await this.model.confirmChatProposal(proposalId);
+      await this.model.rejectProposal(proposalId);
+      this.view.setNotProposals(div);
 
       this.modal.close();
     } else {
       //aca se deberia remover el addEventLisener del ChatProposal div
       const res = await this.model.rejectProposal(proposalId);
-
-      console.log(res);
 
       const proposalIcon = div.querySelector("#svg2");
       proposalIcon.removeEventListener("click", this.eventListener);
