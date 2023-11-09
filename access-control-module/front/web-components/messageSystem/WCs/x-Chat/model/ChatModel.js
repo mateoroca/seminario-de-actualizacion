@@ -9,10 +9,15 @@ class ChatModel {
 
   async getServerMessages(data) {
     try {
+      const userId = this.localStorageH.getOfLocalStorage("userId");
+      const token = this.localStorageH.getOfLocalStorage("Token");
+
       let response = await this.apiClient.makeApiCall(
         "chatmessagehandler/getchatmessages",
         "POST",
-        data
+        data,
+        token,
+        userId
       );
 
       return response;
@@ -25,10 +30,15 @@ class ChatModel {
 
   async sendMessageToServer(message) {
     try {
+      const userId = this.localStorageH.getOfLocalStorage("userId");
+      const token = this.localStorageH.getOfLocalStorage("Token");
+
       let response = await this.apiClient.makeApiCall(
         "chatmessagehandler/newchatmessage",
         "POST",
-        message
+        message,
+        token,
+        userId
       );
 
       return response;

@@ -35,6 +35,25 @@ class ListView extends HTMLElement {
     this.currentTime = `${hours}:${minutes}`;
   }
 
+  /*   processClick(event) {
+    const composedPath = event.composedPath();
+    if (composedPath[0].id == "nameDiv") {
+      this.dispatchEvent(
+        new CustomEvent("createChatProposal", {
+          detail: {
+            id: composedPath[0].parentElement.getAttribute("data-userid"),
+          },
+        })
+      );
+    }
+  } 
+
+  connectedCallback() {
+    this.shadowRoot.addEventListener("click", this.processClick.bind(this));
+  }
+
+  */
+
   createUserList(name, userId) {
     const infoContainer = document.createElement("div");
     infoContainer.classList.add("info1");

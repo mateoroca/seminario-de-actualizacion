@@ -8,11 +8,15 @@ class ListModel {
   }
 
   async getServerChatProposals(data) {
+    const userId = this.localStorageH.getOfLocalStorage("userId");
+    const token = this.localStorageH.getOfLocalStorage("Token");
     try {
       let response = await this.apiClient.makeApiCall(
         "chatproposalhandler/getchatproposal",
         "POST",
-        data
+        data,
+        token,
+        userId
       );
 
       return response;
@@ -25,10 +29,14 @@ class ListModel {
 
   async sendNewChatProposal(message) {
     try {
+      const userId = this.localStorageH.getOfLocalStorage("userId");
+      const token = this.localStorageH.getOfLocalStorage("Token");
       let response = await this.apiClient.makeApiCall(
         "chatmessagehandler/newchatmessage",
         "POST",
-        message
+        message,
+        token,
+        userId
       );
 
       return response;
@@ -63,7 +71,9 @@ class ListModel {
       let response = await this.apiClient.makeApiCall(
         "sessionhandler/getactiveusers",
         "GET",
-        null
+        null,
+        token,
+        userId
       );
 
       return response;

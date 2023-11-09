@@ -89,6 +89,11 @@ class Application extends HTMLElement {
     window.addEventListener("trigger-delete-alert-instance", (e) => {
       this.view.footerSlot.removeChild(this.alert);
     });
+
+    window.addEventListener("home-instance", () => {
+      this.view.headerSlot.appendChild(this.nv);
+      this.changeState(this.holdin);
+    });
   }
 }
 

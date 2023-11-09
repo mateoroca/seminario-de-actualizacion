@@ -6,7 +6,7 @@ class navBarModel2 {
     this.localStorageH = new LocalStorageHandler();
     this.apiClient = new ApiClient("http://localhost:3000/");
   }
-  async logout(data) {
+  async logout() {
     try {
       const userId = this.localStorageH.getOfLocalStorage("userId");
       const token = this.localStorageH.getOfLocalStorage("Token");

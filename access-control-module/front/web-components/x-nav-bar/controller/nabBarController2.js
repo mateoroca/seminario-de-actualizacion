@@ -12,7 +12,10 @@ class navBarController2 {
   }
 
   disable() {
-    this.view.logOutLink = null;
+    /*  this.view.logOutLink.removeEventListener("click", (e) => {
+      e.preventDefault();
+      this.onButtomLogOutClick(e);
+    }); */
   }
 
   async onButtomLogOutClick(e) {

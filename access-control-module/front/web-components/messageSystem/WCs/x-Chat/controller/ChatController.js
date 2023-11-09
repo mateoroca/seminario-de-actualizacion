@@ -17,11 +17,8 @@ class ChatController {
     this.secretKey;
   }
   enable() {
-    this.view.addEventListener("send", () => {
-      // se escuchan dos eventos seguidos
-      this.sendAndSetMessage();
-      this.view.cleanInput();
-    });
+    this.view.addEventListener("send", this.sendAndSetMessage.bind(this));
+
     this.intervalId = setInterval(() => {
       this.askForNewMessages();
     }, 5000);
@@ -32,6 +29,7 @@ class ChatController {
     });
     clearInterval(this.intervalId);
   }
+
   ///////////////////////////////////////////////////////
   async sendAndSetMessage() {
     const userId = this.localStorageH.getOfLocalStorage("userId");
@@ -59,6 +57,8 @@ class ChatController {
     const liMessage = this.view.setNewMessage(messageBody, currentTime);
 
     let response = await this.model.sendMessageToServer(message);
+
+    this.view.cleanInput();
 
     if (response && response.status == true) {
       this.view.setReceivedSymbol(liMessage);

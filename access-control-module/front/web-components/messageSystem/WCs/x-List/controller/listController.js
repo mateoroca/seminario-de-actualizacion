@@ -32,7 +32,21 @@ class ListController extends HTMLElement {
     this.newRes = false;
     this.eventListener = null;
     this.eventListener2 = null;
+    this.intervalId;
+
+    //-------------
+    /*  this.view.addEventListener(
+      "createChatProposal",
+      this.oncreatechatproposal.bind(this)
+    ); */
   }
+
+  /*   oncreatechatproposal(event) {
+    alert("Attempting to create chat proposal for user: " + event.detail.id);
+
+   
+  } Pendiente a proximo refactoring */
+
   async enable() {
     this.newRes = await this.worker();
 
@@ -67,6 +81,11 @@ class ListController extends HTMLElement {
       this.model.getServerChatProposals(userId),
       this.model.getChats(userId),
     ]);
+
+    console.log(response);
+    console.log(response2);
+    console.log(response3);
+    console.log(response4);
 
     try {
       if (response && response2 && response3 && response4) {
@@ -176,7 +195,7 @@ class ListController extends HTMLElement {
 
           this.eventListener2 = (e) => {
             this.dispatchEvent(
-              new CustomEvent("new-chat", {
+              new CustomEvent("select-chat", {
                 detail: { chat, userName },
               })
             );

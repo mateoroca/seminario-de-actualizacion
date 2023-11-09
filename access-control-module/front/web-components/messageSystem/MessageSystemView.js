@@ -14,34 +14,8 @@ class MessageSystemView extends HTMLElement {
     this.localStorageHandler = new LocalStorageHandler();
     ////////////////////////////////
 
-    this.list.controller.addEventListener("new-chat", async (e) => {
-      const userId = this.localStorageHandler.getOfLocalStorage("userId");
-      const eventData = e.detail;
-      const chat = eventData.chat;
-      const userName = eventData.userName;
-
-      const chatId = chat.chatId;
-      const userOrigin = chat.userOriginId;
-      const userTarget = chat.userTargetId;
-      const secretKey = chat.secretKey;
-
-      if (userOrigin == userId) {
-        this.chat.controller.setValues(
-          chatId,
-          userTarget,
-          userOrigin,
-          secretKey
-        );
-        this.chat.view.setChatTitle(userName);
-      } else {
-        this.chat.controller.setValues(
-          chatId,
-          userOrigin,
-          userTarget,
-          secretKey
-        );
-        this.chat.view.setChatTitle(userName);
-      }
+    this.list.controller.addEventListener("select-chat", async (e) => {
+      this.onSelectChat(e);
     });
 
     ////////////////////////////////
@@ -59,9 +33,39 @@ class MessageSystemView extends HTMLElement {
     this.appendChild(this.mainContainer);
   }
 
-  connectedCallback() {}
+  connectedCallback() {
+    this.chat.controller.enable();
+    this.list.controller.enable();
+  }
 
-  disconnectedCallback() {}
+  disconnectedCallback() {
+    this.chat.controller.disable();
+    this.list.controller.disable();
+  }
+
+  onSelectChat(e) {
+    const userId = this.localStorageHandler.getOfLocalStorage("userId");
+    const eventData = e.detail;
+    const chat = eventData.chat;
+    const userName = eventData.userName;
+
+    const chatId = chat.chatId;
+    const userOrigin = chat.userOriginId;
+    const userTarget = chat.userTargetId;
+    const secretKey = chat.secretKey;
+
+    if (userOrigin == userId) {
+      this.chat.controller.setValues(chatId, userTarget, userOrigin, secretKey);
+      this.chat.view.setChatTitle(userName);
+      this.chat.view.removeMessages();
+      this.chat.controller.messagesAttached = [];
+    } else {
+      this.chat.controller.setValues(chatId, userOrigin, userTarget, secretKey);
+      this.chat.view.setChatTitle(userName);
+      this.chat.view.removeMessages();
+      this.chat.controller.messagesAttached = [];
+    }
+  }
 }
 
 customElements.define("x-mesagesysyemview", MessageSystemView);

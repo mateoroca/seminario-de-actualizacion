@@ -118,6 +118,12 @@ class ChatView extends HTMLElement {
   setChatTitle(name) {
     this.chatHeader.textContent = name;
   }
+
+  removeMessages() {
+    while (this.messageList.firstChild) {
+      this.messageList.removeChild(this.messageList.firstChild);
+    }
+  }
 }
 
 customElements.define("chat-app", ChatView);

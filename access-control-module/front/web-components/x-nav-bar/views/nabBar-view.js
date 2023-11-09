@@ -11,7 +11,6 @@ class navBarView extends HTMLElement {
     this.homeLink = document.createElement("a");
     this.homeLink.classList.add("nav-link");
     this.homeLink.textContent = "Home";
-    this.homeLink.href = "/";
 
     this.rightContainer = document.createElement("div");
     this.rightContainer.classList.add("right-container");
