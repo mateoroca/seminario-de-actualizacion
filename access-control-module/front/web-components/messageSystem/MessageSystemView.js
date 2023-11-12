@@ -3,7 +3,7 @@ import { List } from "./WCs/x-List/x-list.js";
 import { LocalStorageHandler } from "../common/LocalStorageHandler.js";
 import { Encryptor } from "../../web-components/common/Encryptor.js";
 
-class MessageSystemView extends HTMLElement {
+class MessageSystem extends HTMLElement {
   constructor() {
     super();
 
@@ -33,15 +33,9 @@ class MessageSystemView extends HTMLElement {
     this.appendChild(this.mainContainer);
   }
 
-  connectedCallback() {
-    this.chat.controller.enable();
-    this.list.controller.enable();
-  }
+  connectedCallback() {}
 
-  disconnectedCallback() {
-    this.chat.controller.disable();
-    this.list.controller.disable();
-  }
+  disconnectedCallback() {}
 
   onSelectChat(e) {
     const userId = this.localStorageHandler.getOfLocalStorage("userId");
@@ -68,6 +62,6 @@ class MessageSystemView extends HTMLElement {
   }
 }
 
-customElements.define("x-mesagesysyemview", MessageSystemView);
+customElements.define("x-mesagesysyemview", MessageSystem);
 
-export { MessageSystemView };
+export { MessageSystem };

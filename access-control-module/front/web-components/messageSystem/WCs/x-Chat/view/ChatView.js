@@ -44,8 +44,9 @@ class ChatView extends HTMLElement {
     shadowRoot.appendChild(this.card);
     //////////////////////////////////////////////////////
 
-    this.sendButton.addEventListener("click", () => {
-      this.dispatchEvent(new CustomEvent("send")); //se esta disparando dos veces
+    this.sendButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.dispatchEvent(new CustomEvent("send"));
     });
   }
   setNewMessage(message, timestamp) {

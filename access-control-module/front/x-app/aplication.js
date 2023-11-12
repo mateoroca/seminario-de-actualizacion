@@ -10,7 +10,7 @@ import { navBarController2 } from "../web-components/x-nav-bar/controller/nabBar
 import { Alert } from "../web-components/x-alert/x-alert.js";
 import { AccessControlPanel } from "../web-components/x-AccessControlPanel/AccessControlPanel.js";
 import { ServerErrors } from "../web-components/ServerErrors/x-serverErrors.js";
-import { MessageSystemView } from "../web-components/messageSystem/MessageSystemView.js";
+import { MessageSystem } from "../web-components/messageSystem/MessageSystemView.js";
 
 class Application extends HTMLElement {
   constructor() {
@@ -27,7 +27,7 @@ class Application extends HTMLElement {
     this.alert = new Alert();
     this.accessControlPanel = new AccessControlPanel();
 
-    this.messageSysyem = new MessageSystemView();
+    this.messageSysyem = new MessageSystem();
 
     this.currentState = null;
 
@@ -93,6 +93,14 @@ class Application extends HTMLElement {
     window.addEventListener("home-instance", () => {
       this.view.headerSlot.appendChild(this.nv);
       this.changeState(this.holdin);
+    });
+
+    window.addEventListener("trigger-accesscontrol-instance", () => {
+      this.changeState(this.accessControlPanel);
+    });
+
+    window.addEventListener("trigger-chat-instance", () => {
+      this.changeState(this.messageSysyem);
     });
   }
 }

@@ -21,13 +21,13 @@ class SessionHandler {
         cacheHandler.storeUserIdAndToken(userId, token);
         cacheHandler.setAsActive(userId);
 
-        return { success: true, token };
+        return { status: true, token };
       } else {
-        return { success: false, error: "wrong username or password error" };
+        return { status: false, message: "wrong username or password error" };
       }
     } catch (error) {
       console.error(error);
-      return { success: false, error: "Internal server error" };
+      return { status: false, error: "Internal server error" };
     }
   }
 

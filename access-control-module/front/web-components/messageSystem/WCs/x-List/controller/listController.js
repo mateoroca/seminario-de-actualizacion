@@ -82,11 +82,6 @@ class ListController extends HTMLElement {
       this.model.getChats(userId),
     ]);
 
-    console.log(response);
-    console.log(response2);
-    console.log(response3);
-    console.log(response4);
-
     try {
       if (response && response2 && response3 && response4) {
         let users = response.data;
@@ -114,7 +109,7 @@ class ListController extends HTMLElement {
             };
 
             nameDiv.addEventListener("click", async () => {
-              this.sendNewChatProposal(data); // que hago con esto? es de la vista o del controlador?
+              this.sendNewChatProposal(data);
             });
 
             this.usersAttached.push(item.id);
@@ -164,7 +159,7 @@ class ListController extends HTMLElement {
           this.view.setNewProposal(div);
 
           const proposalIcon = div.querySelector("#svg2");
-          // que hago con esto? es de la vista o del controlador?
+
           this.eventListener = (e) => {
             this.acceptOrRejectChatProposal(chatProposal.id, div);
           };
@@ -187,7 +182,7 @@ class ListController extends HTMLElement {
           chat.userTargetId == userIdValue
         ) {
           const writeIcon = div.querySelector("#svg3");
-          // que hago con esto? es de la vista o del controlador?
+
           this.view.setNewAvaibleChat(div);
 
           const nameDiv = div.querySelector("#nameDiv");

@@ -33,6 +33,7 @@ class ChatController {
   ///////////////////////////////////////////////////////
   async sendAndSetMessage() {
     const userId = this.localStorageH.getOfLocalStorage("userId");
+
     const currentDate = new Date();
     const hours = currentDate.getHours().toString().padStart(2, "0");
     const minutes = currentDate.getMinutes().toString().padStart(2, "0");
@@ -78,8 +79,6 @@ class ChatController {
     let response = await this.model.getServerMessages(data);
 
     const arrayOfMessages = response.arrayOfMessages;
-
-    console.log(arrayOfMessages);
 
     if (response.status == true) {
       arrayOfMessages.forEach((message) => {

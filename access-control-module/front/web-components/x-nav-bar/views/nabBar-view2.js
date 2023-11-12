@@ -8,13 +8,16 @@ class navBarView2 extends HTMLElement {
     this.leftContainer = document.createElement("div");
     this.leftContainer.classList.add("left-container");
 
-    this.homeLink = document.createElement("a");
-    this.homeLink.classList.add("nav-link");
-    this.homeLink.textContent = "Home";
-    this.homeLink.href = "/";
-
     this.rightContainer = document.createElement("div");
     this.rightContainer.classList.add("right-container");
+
+    this.accesscontrolLink = document.createElement("a");
+    this.accesscontrolLink.classList.add("nav-link");
+    this.accesscontrolLink.textContent = "Access Control Panel";
+
+    this.chatLink = document.createElement("a");
+    this.chatLink.classList.add("nav-link");
+    this.chatLink.textContent = "Chat";
 
     this.logOutLink = document.createElement("a");
     this.logOutLink.classList.add("nav-link");
@@ -24,8 +27,17 @@ class navBarView2 extends HTMLElement {
     this.appendChild(this.navBar);
     this.navBar.appendChild(this.leftContainer);
     this.navBar.appendChild(this.rightContainer);
-    this.leftContainer.appendChild(this.homeLink);
+    this.leftContainer.appendChild(this.accesscontrolLink);
+    this.leftContainer.appendChild(this.chatLink);
     this.rightContainer.appendChild(this.logOutLink);
+
+    this.accesscontrolLink.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("trigger-accesscontrol-instance"));
+    });
+
+    this.chatLink.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("trigger-chat-instance"));
+    });
   }
 }
 

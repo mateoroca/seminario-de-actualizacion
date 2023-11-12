@@ -28,6 +28,7 @@ class navBarView extends HTMLElement {
     this.navBar.appendChild(this.leftContainer);
     this.navBar.appendChild(this.rightContainer);
     this.leftContainer.appendChild(this.homeLink);
+
     this.rightContainer.appendChild(this.signUpLink);
     this.rightContainer.appendChild(this.logInLink);
   }

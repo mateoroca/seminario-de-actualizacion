@@ -20,7 +20,7 @@ class navBarController2 {
 
   async onButtomLogOutClick(e) {
     let res = await this.model.logout();
-    if (res) {
+    if (res.status == true) {
       window.dispatchEvent(
         new CustomEvent("trigger-alert-instance", { detail: res.message })
       );
