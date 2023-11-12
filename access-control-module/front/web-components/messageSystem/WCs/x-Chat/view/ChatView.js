@@ -48,6 +48,14 @@ class ChatView extends HTMLElement {
       e.preventDefault();
       this.dispatchEvent(new CustomEvent("send"));
     });
+
+    this.messageInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        console.log("enter pressed");
+        e.preventDefault();
+        this.dispatchEvent(new CustomEvent("send"));
+      }
+    });
   }
   setNewMessage(message, timestamp) {
     const messageContainer = document.createElement("div");
